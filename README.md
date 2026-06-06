@@ -1,5 +1,3 @@
-# SoldArte_Metal
-
 # Soldarte Metal — Backend API
 
 Backend construido con FastAPI + PostgreSQL + Docker.
