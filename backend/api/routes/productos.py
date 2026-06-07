@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
-from app.core.database import get_db
-from app.core.config import settings
-from app.models.models import Producto
-from app.schemas.schemas import ProductoCreate, ProductoOut
+from backend.core.database import get_db
+from backend.core.config import settings
+from backend.models.models import Producto
+from backend.schemas.schemas import ProductoCreate, ProductoOut
 import shutil, os, uuid
 
 router = APIRouter(prefix="/productos", tags=["Productos"])

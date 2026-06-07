@@ -1,27 +1,16 @@
+version: '3.9'
 services:
   db:
-    image: postgres:16
+    image: postgres
+    container_name: soldartemetal-db
     restart: always
     environment:
-      POSTGRES_USER: soldarte
-      POSTGRES_PASSWORD: soldarte123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234soldarte
       POSTGRES_DB: soldarte_db
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  api:
-    build: .
-    restart: always
-    ports:
-      - "8000:8000"
-    env_file:
-      - .env
-    depends_on:
-      - db
-    volumes:
-      - ./uploads:/app/uploads
+        - "5432:5432"
 
 volumes:
   postgres_data:
+  

@@ -25,8 +25,8 @@ Documentación interactiva (Swagger): http://localhost:8000/docs
 ## Estructura del proyecto
 ```
 soldarte-backend/
-├── app/
-│   ├── main.py              # Punto de entrada
+├── main.py              # Punto de entrada
+├── backend/
 │   ├── core/
 │   │   ├── config.py        # Variables de entorno
 │   │   ├── database.py      # Conexión PostgreSQL
@@ -60,4 +60,4 @@ soldarte-backend/
 
 ## Cors
 Por defecto permite peticiones desde `http://localhost:4200` (Angular en desarrollo).
-Para producción, actualiza `allow_origins` en `app/main.py`.
+Para producción, actualiza `allow_origins` en `backend/main.py`.

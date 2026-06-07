@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.core.database import get_db
-from app.models.models import Cotizacion, Favorito
-from app.schemas.schemas import CotizacionCreate, CotizacionOut, FavoritoOut
+from backend.core.database import get_db
+from backend.models.models import Cotizacion, Favorito
+from backend.schemas.schemas import CotizacionCreate, CotizacionOut, FavoritoOut
 
 router = APIRouter(tags=["Cotizaciones y Favoritos"])
 

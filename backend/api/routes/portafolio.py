@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.core.database import get_db
-from app.models.models import Obra, Categoria
-from app.schemas.schemas import ObraCreate, ObraOut, CategoriaCreate, CategoriaOut
+from backend.core.database import get_db
+from backend.models.models import Obra, Categoria
+from backend.schemas.schemas import ObraCreate, ObraOut, CategoriaCreate, CategoriaOut
 
 router = APIRouter(prefix="/portafolio", tags=["Portafolio"])
 

@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from app.core.database import engine, Base
-from app.api.routes import auth, portafolio, productos, cotizaciones
+from backend.core.database import engine, Base
+from backend.api.routes import auth, portafolio, productos, cotizaciones
 import os
 
 Base.metadata.create_all(bind=engine)
