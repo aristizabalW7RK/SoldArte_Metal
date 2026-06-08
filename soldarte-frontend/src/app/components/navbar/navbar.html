@@ -20,7 +20,12 @@
 </ul>
 
   <div class="nav-menu" [class.abierto]="menuAbierto()">
-    <button class="cerrar" (click)="toggleMenu()">x</button>
+    <div class="nav-menu-header">
+      <a class="navbar-brand" routerLink="/">
+        <img src="soldarte_logo_menu.png" alt="Soldarte Metal">
+      </a>
+      <button class="cerrar" (click)="toggleMenu()">✖</button>
+    </div>
     <ul>
       <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="toggleMenu()">Inicio</a></li>
       <li><a routerLink="/portafolio" routerLinkActive="active" (click)="toggleMenu()">Portafolio</a></li>

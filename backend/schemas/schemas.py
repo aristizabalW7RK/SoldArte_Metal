@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 from datetime import date, datetime
 from decimal import Decimal
 from typing import Optional
@@ -17,7 +17,7 @@ class UsuarioOut(BaseModel):
     email: str
     telefono: Optional[str]
     created_at: datetime
-    class Config: from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class LoginSchema(BaseModel):
     email: EmailStr
@@ -34,7 +34,7 @@ class CategoriaCreate(BaseModel):
 
 class CategoriaOut(CategoriaCreate):
     id: int
-    class Config: from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Imagen Obra ---
 class ImagenObraOut(BaseModel):
@@ -42,7 +42,7 @@ class ImagenObraOut(BaseModel):
     url: str
     es_portada: bool
     orden: int
-    class Config: from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Obra ---
 class ObraCreate(BaseModel):
@@ -58,7 +58,7 @@ class ObraOut(ObraCreate):
     created_at: datetime
     imagenes: list[ImagenObraOut] = []
     categoria: CategoriaOut
-    class Config: from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Producto ---
 class ProductoCreate(BaseModel):
@@ -73,7 +73,7 @@ class ProductoOut(ProductoCreate):
     id: int
     imagen_url: Optional[str]
     created_at: datetime
-    class Config: from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Cotizacion ---
 class CotizacionCreate(BaseModel):
@@ -89,11 +89,11 @@ class CotizacionOut(CotizacionCreate):
     id: int
     estado: str
     created_at: datetime
-    class Config: from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Favorito ---
 class FavoritoOut(BaseModel):
     id: int
     producto: ProductoOut
     created_at: datetime
-    class Config: from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

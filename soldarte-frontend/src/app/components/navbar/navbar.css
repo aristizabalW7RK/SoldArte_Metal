@@ -45,9 +45,25 @@
   width: 400px;
   height: 100vh;
   background-color: #ffffff;
-  padding: 2rem;
+  padding: 1rem;
   transition: left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.nav-menu img {
+  position: relative;
+  top: -20px;
+  width: 200px;
+  height: auto;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-menu.abierto {
@@ -72,6 +88,9 @@
 }
 
 .cerrar {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   display: block;
   background: none;
   border: none;
@@ -80,7 +99,7 @@
   cursor: pointer;
   padding: 0;
   margin-left: auto;
-  margin-bottom: 1.5rem;
+  margin-bottom: 4rem;
 }
 
 .cerrar:hover {
@@ -138,4 +157,9 @@
   height: 50px;
   width: 1px;
   background-color: #e0e0e0;
+}
+
+.nav-menu ul li {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 1rem;
 }

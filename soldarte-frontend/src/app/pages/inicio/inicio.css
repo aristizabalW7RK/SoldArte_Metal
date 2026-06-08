@@ -1,5 +1,5 @@
 .inicio {
-  padding-top: 70px;
+  padding-top: 10px;
 }
 
 .hero {
@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: flex-start;
   padding-top: 150px;
-  min-height: 100vh;
+  min-height: 10vh;
   text-align: center;
   padding: 2rem;
 }
@@ -20,6 +20,7 @@
 }
 
 .hero-eslogan {
+  margin-top: -5.5rem;
   font-size: 1.3rem;
   color: #555555;
   margin-bottom: 2rem;
@@ -27,17 +28,43 @@
   text-transform: uppercase;
 }
 
-.hero-btn {
-  background-color: #e63946;
-  color: #ffffff;
-  padding: 0.9rem 2.5rem;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  transition: background-color 0.3s ease;
+.sobre-nosotros {
+  padding: 5rem 2rem;
+  background-color: #ffffff;
 }
 
-.hero-btn:hover {
-  background-color: #c1121f;
+.sobre-contenido {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.sobre-texto {
+  flex: 1;
+}
+
+.sobre-texto h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1a1a1a;
+}
+
+.sobre-texto p {
+  font-size: 1rem;
+  color: #555555;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.sobre-imagen {
+  flex: 1;
+}
+
+.sobre-imagen img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
 }
