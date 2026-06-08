@@ -1,0 +1,141 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  padding: 0.8rem 2rem;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 1002;
+}
+
+.navbar-brand img {
+  position: fixed;
+  top: -13px;
+  height: 90px;
+  width: auto;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 4px;
+  background-color: #d00000;
+  transition: all 0.4s ease;
+}
+
+.nav-menu {
+  position: fixed;
+  top: 0px;
+  left: -400px;
+  width: 400px;
+  height: 100vh;
+  background-color: #ffffff;
+  padding: 2rem;
+  transition: left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 1001;
+}
+
+.nav-menu.abierto {
+  left: 0;
+}
+
+.nav-menu ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.nav-menu a {
+  color: #000000;
+  font-size: 1.1rem;
+  transition: color 0.4s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  color: #e63946;
+}
+
+.cerrar {
+  display: block;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #000000;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+  margin-bottom: 1.5rem;
+}
+
+.cerrar:hover {
+  color: #e63946;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.overlay.activo {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.navbar-links a {
+  color: #000000;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+  color: #e63946;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 0.6rem;
+  position: relative;
+}
+
+.navbar-left::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  height: 50px;
+  width: 1px;
+  background-color: #e0e0e0;
+}
