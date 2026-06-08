@@ -56,4 +56,4 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: npm test -- --run  # --run para modo CI sin watch
+        run: npx ng test --watch=false  # --run para modo CI sin watch
