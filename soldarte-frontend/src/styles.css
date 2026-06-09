@@ -5,8 +5,8 @@
 }
 
 body {
-  background-color: #f0f0f0;
-  color: #1a1a1a;
+  background-color: #0a0a0a;
+  color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -17,4 +17,4 @@ a {
 
 ul {
   list-style: none;
-}  
+}
