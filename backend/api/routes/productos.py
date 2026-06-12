@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 from backend.core.database import get_db
 from backend.core.config import settings
-from backend.models.models import Producto
+from backend.core.deps import get_current_admin
+from backend.models.models import Producto, Usuario
 from backend.schemas.schemas import ProductoCreate, ProductoOut
 import shutil, os, uuid
 
@@ -23,7 +24,7 @@ def obtener_producto(producto_id: int, db: Session = Depends(get_db)):
     return producto
 
 @router.post("", response_model=ProductoOut, status_code=201)
-def crear_producto(datos: ProductoCreate, db: Session = Depends(get_db)):
+def crear_producto(datos: ProductoCreate, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
     producto = Producto(**datos.model_dump())
     db.add(producto)
     db.commit()
@@ -31,7 +32,7 @@ def crear_producto(datos: ProductoCreate, db: Session = Depends(get_db)):
     return producto
 
 @router.put("/{producto_id}", response_model=ProductoOut)
-def actualizar_producto(producto_id: int, datos: ProductoCreate, db: Session = Depends(get_db)):
+def actualizar_producto(producto_id: int, datos: ProductoCreate, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
     producto = db.query(Producto).filter(Producto.id == producto_id).first()
     if not producto:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
@@ -42,7 +43,7 @@ def actualizar_producto(producto_id: int, datos: ProductoCreate, db: Session = D
     return producto
 
 @router.delete("/{producto_id}", status_code=204)
-def eliminar_producto(producto_id: int, db: Session = Depends(get_db)):
+def eliminar_producto(producto_id: int, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
     producto = db.query(Producto).filter(Producto.id == producto_id).first()
     if not producto:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
@@ -50,7 +51,7 @@ def eliminar_producto(producto_id: int, db: Session = Depends(get_db)):
     db.commit()
 
 @router.post("/{producto_id}/imagen", response_model=ProductoOut)
-def subir_imagen_producto(producto_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
+def subir_imagen_producto(producto_id: int, file: UploadFile = File(...), db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
     producto = db.query(Producto).filter(Producto.id == producto_id).first()
     if not producto:
         raise HTTPException(status_code=404, detail="Producto no encontrado")

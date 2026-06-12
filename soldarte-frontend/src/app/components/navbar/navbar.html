@@ -6,7 +6,7 @@
       <span></span>
     </button>
     <a class="navbar-brand" routerLink="/">
-      <img src="soldarte_logoV1.png" alt="Soldarte Metal">
+      <img [src]="temaService.oscuro() ? 'logos/soldarte_logoV1.png' : 'logos/soldarte_logoV1_oscuro.png'" alt="Soldarte Metal">
     </a>
   </div>
 
@@ -17,12 +17,18 @@
   <li><a routerLink="/cotizacion" routerLinkActive="active">Cotización</a></li>
   <li><a routerLink="/login" routerLinkActive="active">Ingresar</a></li>
   <li><a routerLink="/registro" routerLinkActive="active">Registrarse</a></li>
+  <li>
+    <button class="btn-tema" (click)="temaService.toggleTema()"
+      [attr.aria-label]="temaService.oscuro() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+      {{ temaService.oscuro() ? '🌙' : '☀️' }}
+  </button>
+  </li>
 </ul>
 
   <div class="nav-menu" [class.abierto]="menuAbierto()">
     <div class="nav-menu-header">
       <a class="navbar-brand" routerLink="/">
-        <img src="soldarte_logo_menu.png" alt="Soldarte Metal">
+        <img [src]="temaService.oscuro() ? 'logos/soldarte_logo_menu.png' : 'logos/soldarte_logo_menu_oscuro.png'" alt="Soldarte Metal">
       </a>
       <button class="cerrar" (click)="toggleMenu()">✖</button>
     </div>
@@ -33,6 +39,12 @@
       <li><a routerLink="/cotizacion" routerLinkActive="active" (click)="toggleMenu()">Cotización</a></li>
       <li><a routerLink="/login" routerLinkActive="active" (click)="toggleMenu()">Ingresar</a></li>
       <li><a routerLink="/registro" routerLinkActive="active" (click)="toggleMenu()">Registrarse</a></li>
+      <li>
+        <button class="btn-tema btn-tema-movil" (click)="temaService.toggleTema(); toggleMenu()"
+          [attr.aria-label]="temaService.oscuro() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+          {{ temaService.oscuro() ? '🌙 Modo oscuro' : '☀️ Modo claro' }}
+        </button>
+      </li>
     </ul>
   </div>
     <div class="overlay" [class.activo]="menuAbierto()" (click)="toggleMenu()"></div>

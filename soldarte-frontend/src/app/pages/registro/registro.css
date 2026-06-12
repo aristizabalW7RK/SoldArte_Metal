@@ -1,0 +1,168 @@
+.registro {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 5rem 5rem 5rem;
+  background-color: var(--bg-primary);
+}
+
+.registro-izquierda {
+  flex: 1;
+  background-color: var(--bg-primary);
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: -14rem;
+}
+
+.registro-badge {
+  color: #e63946;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.registro-titulo {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.registro-titulo span {
+  color: #e63946;
+}
+
+.registro-descripcion {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1rem;
+  max-width: 400px;
+}
+
+.registro-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid #e63946;
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+}
+
+.registro-info p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.registro-derecha {
+  flex: 0 0 600px;
+  background-color: var(--bg-secondary);
+  padding: 2rem 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.registro-derecha h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.registro-titulo,
+.registro-derecha h2 {
+  font-family: 'Playfair Display', serif;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.form-group input {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.9rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #e63946;
+}
+
+.btn-registro {
+  background-color: #e63946;
+  color: #ffffff;
+  padding: 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.btn-registro:hover {
+  background-color: #c1121f;
+}
+
+.registro-login {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.registro-login a {
+  color: #e63946;
+  font-weight: 600;
+}
+
+.registro-login a:hover {
+  text-decoration: underline;
+}
+
+.error-mensaje {
+  background-color: #e6394620;
+  border: 1px solid #e63946;
+  color: #e63946;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.exito-mensaje {
+  background-color: #2ecc7120;
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+.btn-registro:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

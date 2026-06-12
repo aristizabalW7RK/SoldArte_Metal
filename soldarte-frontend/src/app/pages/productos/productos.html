@@ -1,1 +1,52 @@
-<p>productos works!</p>
+<main class="productos">
+
+  <section class="productos-hero">
+    <span class="productos-badge">SOLDARTE METAL</span>
+    <h1 class="productos-titulo">NUESTROS <span>PRODUCTOS</span></h1>
+    <p class="productos-descripcion">Materiales y productos de alta calidad para tus proyectos de herrería.</p>
+  </section>
+
+  <div class="productos-filtros">
+    <button class="filtro-btn" [class.activo]="soloDisponibles()" (click)="toggleDisponibles()">
+      Solo disponibles
+    </button>
+  </div>
+
+  @if (cargando()) {
+    <div class="productos-cargando">Cargando...</div>
+  } @else if (productos().length === 0) {
+    <div class="productos-vacio">No hay productos disponibles.</div>
+  } @else {
+    <section class="productos-grid">
+      @for (prod of productos(); track prod.id) {
+        <article class="producto-card">
+          <div class="producto-imagen-wrapper">
+            @if (prod.imagen_url) {
+              <img [src]="prod.imagen_url" [alt]="prod.nombre" class="producto-imagen" loading="lazy" />
+            } @else {
+              <div class="producto-imagen-placeholder">
+                <span>📦</span>
+              </div>
+            }
+          </div>
+          <div class="producto-info">
+            <h3 class="producto-nombre">{{ prod.nombre }}</h3>
+            @if (prod.referencia) {
+              <span class="producto-referencia">Ref: {{ prod.referencia }}</span>
+            }
+            @if (prod.descripcion) {
+              <p class="producto-descripcion">{{ prod.descripcion }}</p>
+            }
+            <div class="producto-footer">
+              <span class="producto-precio">{{ formatearPrecio(prod.precio) }}</span>
+              <span class="producto-stock" [class.sin-stock]="prod.stock === 0">
+                {{ prod.stock > 0 ? prod.stock + ' en stock' : 'Sin stock' }}
+              </span>
+            </div>
+          </div>
+        </article>
+      }
+    </section>
+  }
+
+</main>

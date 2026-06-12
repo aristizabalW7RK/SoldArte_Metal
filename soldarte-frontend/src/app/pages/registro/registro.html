@@ -1,1 +1,47 @@
-<p>registro works!</p>
+<main class="registro">
+  <div class="registro-izquierda">
+    <span class="registro-badge">SOLDARTE METAL</span>
+    <h1 class="registro-titulo">CREA TU <span>CUENTA</span></h1>
+    <p class="registro-descripcion">Accede al portal de Soldarte Metal. Solicita cotizaciones, guarda tus productos favoritos y haz seguimiento de tus proyectos.</p>
+    <div class="registro-info">
+      <span class="info-icono">🔒</span>
+      <p>Tus datos están protegidos y encriptados de forma segura.</p>
+    </div>
+  </div>
+
+  <div class="registro-derecha">
+    <h2>Crear Cuenta</h2>
+    <form (ngSubmit)="crearCuenta()">
+      @if (error()) {
+        <div class="error-mensaje">{{ error() }}</div>
+      }
+      @if (exitoso()) {
+        <div class="exito-mensaje">Cuenta creada con éxito. Redirigiendo al inicio de sesión...</div>
+      }
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Tu nombre" [(ngModel)]="nombre" name="nombre" required>
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="tu@correo.com" [(ngModel)]="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" placeholder="+57 300 000 0000" [(ngModel)]="telefono" name="telefono">
+      </div>
+      <div class="form-group">
+        <label>Fecha de nacimiento</label>
+        <input type="date" [(ngModel)]="fechaNacimiento" name="fechaNacimiento">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" placeholder="••••••••" [(ngModel)]="password" name="password" required>
+      </div>
+      <button class="btn-registro" type="submit" [disabled]="cargando()">
+        {{ cargando() ? 'Creando cuenta...' : 'CREAR CUENTA' }}
+      </button>
+    </form>
+    <p class="registro-login">¿Ya tienes cuenta? <a routerLink="/login">Ingresar</a></p>
+  </div>
+</main>

@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     UPLOAD_DIR: str = "uploads"
+    ADMIN_EMAIL: str = "admin@soldarte.com"
+    ADMIN_PASSWORD: str = "Admin123!"
 
     model_config = {"env_file": ".env"}
 

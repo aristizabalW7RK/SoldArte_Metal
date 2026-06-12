@@ -2,7 +2,7 @@
 
   <section class="hero">
 <div class="hero-logo">
-  <img src="soldarte_logo.png" alt="Soldarte Metal">
+  <img [src]="temaService.oscuro() ? 'logos/soldarte_logo.png' : 'logos/soldarte_logo_original_oscuro.png'" alt="Soldarte Metal">
     </div>
     <p class="hero-eslogan">Todo En Soldaduras</p>
   </section>
@@ -21,27 +21,38 @@
 </section>
 
 <section class="servicios">
-  <h2 class="servicios-titulo">Nuestros Servicios</h2>
-  <div class="servicios-grid">
-    <div class="servicio-card">
-      <span class="servicio-icono">🔩</span>
-      <h3>Barandas</h3>
-      <p>Diseño y fabricación de barandas metálicas para interiores y exteriores.</p>
+  <div class="servicios-izquierda">
+    <h2 class="servicios-titulo">Nuestros Servicios</h2>
+    <div class="servicios-grid">
+      <div class="servicio-card">
+        <span class="servicio-icono">🔩</span>
+        <h3>Barandas</h3>
+        <p>Diseño y fabricación de barandas metálicas para interiores y exteriores.</p>
+      </div>
+      <div class="servicio-card">
+        <span class="servicio-icono">🚪</span>
+        <h3>Rejas y Puertas</h3>
+        <p>Rejas de seguridad y puertas metálicas a medida para tu hogar o negocio.</p>
+      </div>
+      <div class="servicio-card">
+        <span class="servicio-icono">🏗️</span>
+        <h3>Estructuras</h3>
+        <p>Estructuras metálicas para construcción, techos y cubiertas.</p>
+      </div>
+      <div class="servicio-card">
+        <span class="servicio-icono">🎨</span>
+        <h3>Otros</h3>
+        <p>Diseños artisticos personalizados.</p>
+      </div>
     </div>
-    <div class="servicio-card">
-      <span class="servicio-icono">🚪</span>
-      <h3>Rejas y Puertas</h3>
-      <p>Rejas de seguridad y puertas metálicas a medida para tu hogar o negocio.</p>
-    </div>
-    <div class="servicio-card">
-      <span class="servicio-icono">🏗️</span>
-      <h3>Estructuras</h3>
-      <p>Estructuras metálicas para construcción, techos y cubiertas.</p>
-    </div>
-    <div class="servicio-card">
-      <span class="servicio-icono">🎨</span>
-      <h3>Herrería Artística</h3>
-      <p>Creaciones artísticas en metal, decoración y diseños personalizados.</p>
+  </div>
+
+  <div class="servicios-derecha">
+    <h3>¿Listo para tu proyecto?</h3>
+    <p>Contáctanos y te ayudamos a hacer realidad tu idea.</p>
+    <div class="servicios-botones">
+      <a routerLink="/cotizacion" class="btn-primario">Solicitar Cotización</a>
+      <a routerLink="/portafolio" class="btn-secundario">Ver Portafolio</a>
     </div>
   </div>
 </section>

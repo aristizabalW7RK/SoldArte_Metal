@@ -53,3 +53,69 @@ def client():
     with TestClient(app) as c:
         yield c
     app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def auth_headers(client):
+    user_resp = client.post("/api/auth/registro", json={
+        "nombre": "Admin",
+        "email": "admin@test.com",
+        "password": "testpass",
+    }).json()
+    db = TestSessionLocal()
+    user = db.query(type('Usuario', (object,), {'__tablename__': 'usuario'})) if False else None
+    from backend.models.models import Usuario as UsuarioModel
+    usuario = db.query(UsuarioModel).filter(UsuarioModel.id == user_resp["id"]).first()
+    usuario.es_admin = True
+    db.commit()
+    db.close()
+
+    resp = client.post("/api/auth/login", json={
+        "email": "admin@test.com",
+        "password": "testpass",
+    })
+    token = resp.json()["access_token"]
+    return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture
+def auth_data(client):
+    user_resp = client.post("/api/auth/registro", json={
+        "nombre": "Normal User",
+        "email": "normal@test.com",
+        "password": "testpass",
+    }).json()
+    resp = client.post("/api/auth/login", json={
+        "email": "normal@test.com",
+        "password": "testpass",
+    })
+    token = resp.json()["access_token"]
+    return {
+        "headers": {"Authorization": f"Bearer {token}"},
+        "user_id": user_resp["id"],
+    }
+
+
+@pytest.fixture
+def admin_data(client):
+    user_resp = client.post("/api/auth/registro", json={
+        "nombre": "Admin",
+        "email": "admin@test.com",
+        "password": "testpass",
+    }).json()
+    db = TestSessionLocal()
+    from backend.models.models import Usuario as UsuarioModel
+    usuario = db.query(UsuarioModel).filter(UsuarioModel.id == user_resp["id"]).first()
+    usuario.es_admin = True
+    db.commit()
+    db.close()
+
+    resp = client.post("/api/auth/login", json={
+        "email": "admin@test.com",
+        "password": "testpass",
+    })
+    token = resp.json()["access_token"]
+    return {
+        "headers": {"Authorization": f"Bearer {token}"},
+        "user_id": user_resp["id"],
+    }

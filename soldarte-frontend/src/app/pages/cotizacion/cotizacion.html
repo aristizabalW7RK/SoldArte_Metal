@@ -1,1 +1,64 @@
-<p>cotizacion works!</p>
+<main class="cotizacion">
+
+  <div class="cotizacion-formulario">
+    <span class="cotizacion-badge">SOLDARTE METAL</span>
+    <h1 class="cotizacion-titulo">SOLICITA TU <span>COTIZACIÓN</span></h1>
+    <p class="cotizacion-descripcion">Cuéntanos sobre tu proyecto y te contactamos a la brevedad.</p>
+
+    <form (ngSubmit)="enviarCotizacion()">
+      @if (error()) {
+        <div class="error-mensaje">{{ error() }}</div>
+      }
+      @if (exitoso()) {
+        <div class="exito-mensaje">¡Cotización enviada con éxito! Te contactaremos pronto.</div>
+      }
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Tu nombre" [(ngModel)]="nombreCliente" name="nombreCliente" required>
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" placeholder="+57 300 000 0000" [(ngModel)]="telefono" name="telefono" required>
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="tu@correo.com" [(ngModel)]="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label>Dirección de la obra</label>
+        <input type="text" placeholder="Ciudad, barrio, dirección" [(ngModel)]="direccion" name="direccion">
+      </div>
+      <div class="form-group">
+        <label>Tipo de trabajo</label>
+        <select [(ngModel)]="tipoTrabajo" name="tipoTrabajo" required>
+          <option value="">Selecciona una opción</option>
+          <option value="baranda">Baranda</option>
+          <option value="reja">Reja</option>
+          <option value="puerta">Puerta</option>
+          <option value="estructura">Estructura</option>
+          <option value="artistico">Otros</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Descripción del trabajo</label>
+        <textarea placeholder="Describe lo que necesitas..." [(ngModel)]="descripcion" name="descripcion" required></textarea>
+      </div>
+
+      <button class="btn-cotizacion" type="submit" [disabled]="cargando()">
+        {{ cargando() ? 'ENVIANDO...' : 'ENVIAR COTIZACIÓN' }}
+      </button>
+    </form>
+  </div>
+
+  <div class="cotizacion-texto-der">
+    <h2>¿Por qué <span>elegirnos?</span></h2>
+    <p>Más de 15 años transformando el metal en soluciones de alta calidad para tu hogar y negocio.</p>
+    <ul>
+      <li>✔ Materiales de primera calidad</li>
+      <li>✔ Diseños personalizados</li>
+      <li>✔ Garantía en todos nuestros trabajos</li>
+      <li>✔ Atención personalizada</li>
+    </ul>
+    <img [src]="temaService.oscuro() ? 'logos/cotizacion-izqtemaoscuro.jpg' : 'logos/cotizacion-izqtemaclaro.jpg'" alt="Obra Soldarte Metal">
+  </div>
+</main>

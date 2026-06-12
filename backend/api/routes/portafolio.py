@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from backend.core.database import get_db
-from backend.models.models import Obra, Categoria
+from backend.core.deps import get_current_admin
+from backend.models.models import Obra, Categoria, Usuario
 from backend.schemas.schemas import ObraCreate, ObraOut, CategoriaCreate, CategoriaOut
 
 router = APIRouter(prefix="/portafolio", tags=["Portafolio"])
@@ -12,7 +13,7 @@ def listar_categorias(db: Session = Depends(get_db)):
     return db.query(Categoria).all()
 
 @router.post("/categorias", response_model=CategoriaOut, status_code=201)
-def crear_categoria(datos: CategoriaCreate, db: Session = Depends(get_db)):
+def crear_categoria(datos: CategoriaCreate, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
     categoria = Categoria(**datos.model_dump())
     db.add(categoria)
     db.commit()
@@ -37,7 +38,7 @@ def obtener_obra(obra_id: int, db: Session = Depends(get_db)):
     return obra
 
 @router.post("/obras", response_model=ObraOut, status_code=201)
-def crear_obra(datos: ObraCreate, db: Session = Depends(get_db)):
+def crear_obra(datos: ObraCreate, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
     obra = Obra(**datos.model_dump())
     db.add(obra)
     db.commit()
@@ -45,7 +46,7 @@ def crear_obra(datos: ObraCreate, db: Session = Depends(get_db)):
     return obra
 
 @router.put("/obras/{obra_id}", response_model=ObraOut)
-def actualizar_obra(obra_id: int, datos: ObraCreate, db: Session = Depends(get_db)):
+def actualizar_obra(obra_id: int, datos: ObraCreate, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
     obra = db.query(Obra).filter(Obra.id == obra_id).first()
     if not obra:
         raise HTTPException(status_code=404, detail="Obra no encontrada")
@@ -56,7 +57,7 @@ def actualizar_obra(obra_id: int, datos: ObraCreate, db: Session = Depends(get_d
     return obra
 
 @router.delete("/obras/{obra_id}", status_code=204)
-def eliminar_obra(obra_id: int, db: Session = Depends(get_db)):
+def eliminar_obra(obra_id: int, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
     obra = db.query(Obra).filter(Obra.id == obra_id).first()
     if not obra:
         raise HTTPException(status_code=404, detail="Obra no encontrada")

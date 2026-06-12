@@ -1,1 +1,57 @@
-<p>portafolio works!</p>
+<main class="portafolio">
+
+  <section class="portafolio-hero">
+    <span class="portafolio-badge">SOLDARTE METAL</span>
+    <h1 class="portafolio-titulo">NUESTRO <span>PORTAFOLIO</span></h1>
+    <p class="portafolio-descripcion">Explora nuestros trabajos realizados con dedicación y precisión en cada detalle.</p>
+  </section>
+
+  <div class="filtros">
+    <button
+      class="filtro-btn"
+      [class.activo]="categoriaSeleccionada() === null"
+      (click)="filtrarPorCategoria(null)">
+      Todas
+    </button>
+    @for (cat of categorias(); track cat.id) {
+      <button
+        class="filtro-btn"
+        [class.activo]="categoriaSeleccionada() === cat.id"
+        (click)="filtrarPorCategoria(cat.id)">
+        {{ cat.nombre }}
+      </button>
+    }
+  </div>
+
+  @if (cargando()) {
+    <div class="portafolio-cargando">Cargando...</div>
+  } @else if (obrasFiltradas().length === 0) {
+    <div class="portafolio-vacio">No hay obras en esta categoría.</div>
+  } @else {
+    <section class="obras-grid">
+      @for (obra of obrasFiltradas(); track obra.id) {
+        <article class="obra-card">
+          <div class="obra-imagen-wrapper">
+            <img
+              [src]="obra.imagenes[0]?.url || 'placeholder.jpg'"
+              [alt]="obra.titulo"
+              class="obra-imagen"
+              loading="lazy"
+            />
+          </div>
+          <div class="obra-info">
+            <span class="obra-categoria">{{ obra.categoria.nombre }}</span>
+            <h3 class="obra-titulo">{{ obra.titulo }}</h3>
+            @if (obra.descripcion) {
+              <p class="obra-descripcion">{{ obra.descripcion }}</p>
+            }
+            @if (obra.ubicacion) {
+              <span class="obra-ubicacion">📍 {{ obra.ubicacion }}</span>
+            }
+          </div>
+        </article>
+      }
+    </section>
+  }
+
+</main>
