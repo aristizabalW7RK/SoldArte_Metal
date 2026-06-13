@@ -43,7 +43,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:4200",
         "https://soldartemetal-production.up.railway.app",
-        "https://soldarte.vercel.app",
+        "https://soldarte-metal.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
