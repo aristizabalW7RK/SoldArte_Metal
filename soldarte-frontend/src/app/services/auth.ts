@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { tap } from 'rxjs';
+import { finalize } from 'rxjs';
 import { ApiService } from './api';
 
 export interface LoginData {
@@ -15,11 +15,6 @@ export interface RegistroData {
   fecha_nacimiento?: string;
 }
 
-export interface TokenResponse {
-  access_token: string;
-  token_type: string;
-}
-
 export interface UsuarioResponse {
   id: number;
   nombre: string;
@@ -29,18 +24,9 @@ export interface UsuarioResponse {
   created_at: string;
 }
 
-interface JwtPayload {
-  sub: string;
-  nombre: string;
-  email: string;
-  es_admin: boolean;
-  exp: number;
-}
-
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private api = inject(ApiService);
-  private readonly TOKEN_KEY = 'soldarte-token';
 
   usuario = signal<{
     id: number;
@@ -50,33 +36,14 @@ export class AuthService {
   } | null>(null);
 
   constructor() {
-    this.cargarUsuarioDesdeToken();
+    this.cargarUsuario();
   }
 
-  private cargarUsuarioDesdeToken() {
-    const payload = this.obtenerPayload();
-    if (payload) {
-      this.usuario.set({
-        id: Number(payload['sub']),
-        nombre: (payload['nombre'] as string) ?? 'Usuario',
-        email: (payload['email'] as string) ?? '',
-        es_admin: (payload['es_admin'] as boolean) ?? false,
-      });
-    }
-  }
-
-  private obtenerPayload(): Record<string, unknown> | null {
-    const t = this.token;
-    if (!t) return null;
-    try {
-      return JSON.parse(atob(t.split('.')[1]));
-    } catch {
-      return null;
-    }
-  }
-
-  get token(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+  private cargarUsuario() {
+    this.api.get<UsuarioResponse>('/api/auth/me').subscribe({
+      next: res => this.usuario.set(res),
+      error: () => this.usuario.set(null),
+    });
   }
 
   get usuarioId(): number | null {
@@ -96,7 +63,7 @@ export class AuthService {
   }
 
   get estaAutenticado(): boolean {
-    return !!this.token;
+    return this.usuario() !== null;
   }
 
   registro(datos: RegistroData) {
@@ -104,16 +71,12 @@ export class AuthService {
   }
 
   login(datos: LoginData) {
-    return this.api.post<TokenResponse>('/api/auth/login', datos).pipe(
-      tap(res => {
-        localStorage.setItem(this.TOKEN_KEY, res.access_token);
-        this.cargarUsuarioDesdeToken();
-      }),
-    );
+    return this.api.post<UsuarioResponse>('/api/auth/login', datos);
   }
 
   logout() {
-    localStorage.removeItem(this.TOKEN_KEY);
-    this.usuario.set(null);
+    this.api.post('/api/auth/logout', {}).pipe(
+      finalize(() => this.usuario.set(null)),
+    ).subscribe();
   }
 }

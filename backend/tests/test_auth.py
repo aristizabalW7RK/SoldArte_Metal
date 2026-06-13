@@ -50,8 +50,9 @@ class TestLogin:
         })
         assert response.status_code == 200
         data = response.json()
-        assert "access_token" in data
-        assert data["token_type"] == "bearer"
+        assert data["email"] == "login@example.com"
+        assert "id" in data
+        assert "soldarte_token" in response.cookies
 
     def test_login_credenciales_invalidas(self, client):
         response = client.post("/api/auth/login", json={

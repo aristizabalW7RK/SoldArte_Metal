@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     UPLOAD_DIR: str = "uploads"
     ADMIN_EMAIL: str = "admin@soldarte.com"
     ADMIN_PASSWORD: str = "Admin123!"
+    DEBUG: bool = True
 
     model_config = {"env_file": ".env"}
 

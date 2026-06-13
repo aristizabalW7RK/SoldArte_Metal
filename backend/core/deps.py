@@ -1,4 +1,4 @@
-from fastapi import Header, HTTPException, Depends
+from fastapi import HTTPException, Depends, Request
 from sqlalchemy.orm import Session
 
 from backend.core.database import get_db
@@ -7,12 +7,16 @@ from backend.models.models import Usuario
 
 
 def get_current_user(
-    authorization: str = Header(...),
+    request: Request,
     db: Session = Depends(get_db),
 ) -> Usuario:
-    if not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Token inválido")
-    token = authorization.removeprefix("Bearer ")
+    auth = request.headers.get("Authorization")
+    if auth and auth.startswith("Bearer "):
+        token = auth.removeprefix("Bearer ")
+    else:
+        token = request.cookies.get("soldarte_token")
+    if not token:
+        raise HTTPException(status_code=401, detail="No autenticado")
     payload = decode_token(token)
     if payload is None:
         raise HTTPException(status_code=401, detail="Token inválido o expirado")

@@ -1,12 +1,26 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 from backend.core.database import get_db
 from backend.core.deps import get_current_user
 from backend.core.security import hash_password, verify_password, create_access_token
+from backend.core.config import settings
 from backend.models.models import Usuario
-from backend.schemas.schemas import UsuarioCreate, UsuarioOut, LoginSchema, TokenOut
+from backend.schemas.schemas import UsuarioCreate, UsuarioOut, LoginSchema
 
 router = APIRouter(prefix="/auth", tags=["Autenticación"])
+
+
+def _set_token_cookie(response: Response, token: str):
+    response.set_cookie(
+        key="soldarte_token",
+        value=token,
+        httponly=True,
+        secure=not settings.DEBUG,
+        samesite="none" if not settings.DEBUG else "lax",
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        path="/",
+    )
+
 
 @router.post("/registro", response_model=UsuarioOut, status_code=201)
 def registrar_usuario(datos: UsuarioCreate, db: Session = Depends(get_db)):
@@ -24,8 +38,9 @@ def registrar_usuario(datos: UsuarioCreate, db: Session = Depends(get_db)):
     db.refresh(usuario)
     return usuario
 
-@router.post("/login", response_model=TokenOut)
-def login(datos: LoginSchema, db: Session = Depends(get_db)):
+
+@router.post("/login", response_model=UsuarioOut)
+def login(datos: LoginSchema, response: Response, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == datos.email).first()
     if not usuario or not verify_password(datos.password, usuario.password_hash):
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
@@ -35,7 +50,15 @@ def login(datos: LoginSchema, db: Session = Depends(get_db)):
         "email": usuario.email,
         "es_admin": usuario.es_admin,
     })
-    return {"access_token": token}
+    _set_token_cookie(response, token)
+    return usuario
+
+
+@router.post("/logout")
+def logout(response: Response):
+    response.delete_cookie("soldarte_token", path="/")
+    return {"mensaje": "Sesión cerrada"}
+
 
 @router.get("/me", response_model=UsuarioOut)
 def obtener_perfil(usuario: Usuario = Depends(get_current_user)):

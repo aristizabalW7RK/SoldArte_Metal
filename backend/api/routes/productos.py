@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 from backend.core.database import get_db
-from backend.core.config import settings
 from backend.core.deps import get_current_admin
 from backend.models.models import Producto, Usuario
 from backend.schemas.schemas import ProductoCreate, ProductoOut
-import shutil, os, uuid
+from backend.services.file_service import save_upload
 
 router = APIRouter(prefix="/productos", tags=["Productos"])
 
@@ -55,13 +54,7 @@ def subir_imagen_producto(producto_id: int, file: UploadFile = File(...), db: Se
     producto = db.query(Producto).filter(Producto.id == producto_id).first()
     if not producto:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
-    os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
-    ext = file.filename.split(".")[-1]
-    filename = f"{uuid.uuid4()}.{ext}"
-    filepath = os.path.join(settings.UPLOAD_DIR, filename)
-    with open(filepath, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    producto.imagen_url = f"/uploads/{filename}"
+    producto.imagen_url = save_upload(file)
     db.commit()
     db.refresh(producto)
     return producto

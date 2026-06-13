@@ -55,6 +55,10 @@ def client():
     app.dependency_overrides.clear()
 
 
+def _get_token(resp):
+    return resp.cookies.get("soldarte_token")
+
+
 @pytest.fixture
 def auth_headers(client):
     user_resp = client.post("/api/auth/registro", json={
@@ -63,7 +67,6 @@ def auth_headers(client):
         "password": "testpass",
     }).json()
     db = TestSessionLocal()
-    user = db.query(type('Usuario', (object,), {'__tablename__': 'usuario'})) if False else None
     from backend.models.models import Usuario as UsuarioModel
     usuario = db.query(UsuarioModel).filter(UsuarioModel.id == user_resp["id"]).first()
     usuario.es_admin = True
@@ -74,7 +77,7 @@ def auth_headers(client):
         "email": "admin@test.com",
         "password": "testpass",
     })
-    token = resp.json()["access_token"]
+    token = _get_token(resp)
     return {"Authorization": f"Bearer {token}"}
 
 
@@ -89,7 +92,7 @@ def auth_data(client):
         "email": "normal@test.com",
         "password": "testpass",
     })
-    token = resp.json()["access_token"]
+    token = _get_token(resp)
     return {
         "headers": {"Authorization": f"Bearer {token}"},
         "user_id": user_resp["id"],
@@ -114,7 +117,7 @@ def admin_data(client):
         "email": "admin@test.com",
         "password": "testpass",
     })
-    token = resp.json()["access_token"]
+    token = _get_token(resp)
     return {
         "headers": {"Authorization": f"Bearer {token}"},
         "user_id": user_resp["id"],

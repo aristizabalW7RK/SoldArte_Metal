@@ -6,30 +6,28 @@ import { environment } from '../../environments/environment';
 export class ApiService {
   private http = inject(HttpClient);
   readonly baseUrl = environment.apiUrl;
-  private readonly TOKEN_KEY = 'soldarte-token';
 
-  private get authHeaders(): Record<string, string> {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    return token ? { Authorization: `Bearer ${token}` } : {};
+  private get options() {
+    return { withCredentials: true };
   }
 
   get<T>(path: string, params?: Record<string, string>) {
-    return this.http.get<T>(`${this.baseUrl}${path}`, { params });
+    return this.http.get<T>(`${this.baseUrl}${path}`, { ...this.options, params });
   }
 
   post<T>(path: string, body: unknown) {
-    return this.http.post<T>(`${this.baseUrl}${path}`, body, { headers: this.authHeaders });
+    return this.http.post<T>(`${this.baseUrl}${path}`, body, this.options);
   }
 
   put<T>(path: string, body: unknown) {
-    return this.http.put<T>(`${this.baseUrl}${path}`, body, { headers: this.authHeaders });
+    return this.http.put<T>(`${this.baseUrl}${path}`, body, this.options);
   }
 
   patch<T>(path: string, body: unknown) {
-    return this.http.patch<T>(`${this.baseUrl}${path}`, body, { headers: this.authHeaders });
+    return this.http.patch<T>(`${this.baseUrl}${path}`, body, this.options);
   }
 
   delete<T>(path: string) {
-    return this.http.delete<T>(`${this.baseUrl}${path}`, { headers: this.authHeaders });
+    return this.http.delete<T>(`${this.baseUrl}${path}`, this.options);
   }
 }

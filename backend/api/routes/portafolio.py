@@ -2,10 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 from backend.core.database import get_db
 from backend.core.deps import get_current_admin
-from backend.core.config import settings
 from backend.models.models import Obra, Categoria, ImagenObra, Usuario
 from backend.schemas.schemas import ObraCreate, ObraOut, CategoriaCreate, CategoriaOut, ImagenObraOut
-import shutil, os, uuid
+from backend.services.file_service import save_upload
 
 router = APIRouter(prefix="/portafolio", tags=["Portafolio"])
 
@@ -78,15 +77,10 @@ def subir_imagen_obra(
     obra = db.query(Obra).filter(Obra.id == obra_id).first()
     if not obra:
         raise HTTPException(status_code=404, detail="Obra no encontrada")
-    os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
-    ext = file.filename.split(".")[-1] if "." in file.filename else "jpg"
-    filename = f"{uuid.uuid4()}.{ext}"
-    filepath = os.path.join(settings.UPLOAD_DIR, filename)
-    with open(filepath, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    url = save_upload(file)
     if es_portada:
         db.query(ImagenObra).filter(ImagenObra.obra_id == obra_id, ImagenObra.es_portada == True).update({"es_portada": False})
-    imagen = ImagenObra(obra_id=obra_id, url=f"/uploads/{filename}", es_portada=es_portada, orden=orden)
+    imagen = ImagenObra(obra_id=obra_id, url=url, es_portada=es_portada, orden=orden)
     db.add(imagen)
     db.commit()
     db.refresh(imagen)
