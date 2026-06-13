@@ -73,6 +73,23 @@ def _seed_portafolio():
         db.close()
 
 
+def _copiar_imagenes_seed():
+    import shutil
+    origen = os.path.join(os.path.dirname(__file__), "uploads_data")
+    if not os.path.exists(origen):
+        return
+    os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
+    for archivo in ["barandas1.jpg", "estructura1.jpg", "puertas1.jpg", "puertas2.jpg", "rejas1.jpg"]:
+        src = os.path.join(origen, archivo)
+        dst = os.path.join(settings.UPLOAD_DIR, archivo)
+        if os.path.exists(src) and not os.path.exists(dst):
+            shutil.copy2(src, dst)
+            print(f"  + Imagen copiada: {archivo}")
+    finally:
+        db.close()
+
+
+_copiar_imagenes_seed()
 _seed_admin()
 _seed_portafolio()
 
