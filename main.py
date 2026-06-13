@@ -66,6 +66,7 @@ def _seed_portafolio():
             db.flush()
             db.add(ImagenObra(obra_id=obra.id, url=f"/uploads/{imagen}", es_portada=True, orden=0))
             print(f"  + Obra: {obra_data['titulo']}")
+        db.commit()
     except Exception as e:
         print(f"  ! Error al sembrar portafolio: {e}")
     finally:
