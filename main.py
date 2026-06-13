@@ -85,8 +85,6 @@ def _copiar_imagenes_seed():
         if os.path.exists(src) and not os.path.exists(dst):
             shutil.copy2(src, dst)
             print(f"  + Imagen copiada: {archivo}")
-    finally:
-        db.close()
 
 
 _copiar_imagenes_seed()
