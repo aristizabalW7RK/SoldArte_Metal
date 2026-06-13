@@ -1,9 +1,9 @@
 .cotizacion {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  gap: 2rem;
-  padding: 90px 2rem 2rem 2rem;
+  align-items: flex-start;
+  gap: 3rem;
+  padding: 90px 2rem 2rem;
   background-color: var(--bg-primary);
 }
 
@@ -12,7 +12,7 @@
   padding: 4rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.5rem;
   background-color: var(--bg-secondary);
   overflow-y: auto;
   border-radius: 4px;
@@ -28,7 +28,7 @@
 .cotizacion-titulo {
   font-size: 2.5rem;
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.1;
   text-transform: uppercase;
   color: var(--text-primary);
   font-family: 'Playfair Display', serif;
@@ -39,11 +39,16 @@
 }
 
 .cotizacion-descripcion {
-
   color: var(--text-secondary);
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 0.5rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .form-group {
@@ -118,11 +123,11 @@
 }
 
 .cotizacion-texto-der img {
-  width: 90%;
+  width: 100%;
+  max-width: 500px;
   max-height: 400px;
   object-fit: contain;
   border-radius: 4px;
-  margin-left: -220px;
 }
 
 .cotizacion-texto-der h2 {
@@ -176,4 +181,23 @@
 .btn-cotizacion:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+@media (max-width: 1000px) {
+  .cotizacion {
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 1.5rem 2rem;
+    gap: 1.5rem;
+  }
+
+  .cotizacion-formulario {
+    flex: none;
+    width: 100%;
+    padding: 2rem 1.5rem;
+  }
+
+  .cotizacion-texto-der {
+    padding: 0;
+  }
 }

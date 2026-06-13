@@ -16,6 +16,7 @@ class UsuarioOut(BaseModel):
     nombre: str
     email: str
     telefono: Optional[str]
+    es_admin: bool
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)
 

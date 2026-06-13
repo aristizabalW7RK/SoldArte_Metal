@@ -1,0 +1,47 @@
+<main class="admin-cotizaciones">
+  <div class="admin-header">
+    <a routerLink="/admin" class="btn-volver">← Admin</a>
+    <h1>Cotizaciones</h1>
+  </div>
+
+  @if (error()) {
+    <div class="error-mensaje">{{ error() }}</div>
+  }
+
+  @if (cargando()) {
+    <p class="cargando">Cargando...</p>
+  }
+
+  @if (cotizaciones().length === 0 && !cargando()) {
+    <p class="vacio">No hay cotizaciones aún.</p>
+  }
+
+  <div class="cotizaciones-list">
+    @for (c of cotizaciones(); track c.id) {
+      <div class="cotizacion-card" [class.estado-nueva]="c.estado === 'nueva'" [class.estado-en_revision]="c.estado === 'en_revision'" [class.estado-respondida]="c.estado === 'respondida'" [class.estado-cerrada]="c.estado === 'cerrada'">
+        <div class="card-header">
+          <h3>{{ c.nombre_cliente }}</h3>
+          <span class="estado-badge">{{ c.estado }}</span>
+        </div>
+        <div class="card-body">
+          <p><strong>Email:</strong> {{ c.email }}</p>
+          <p><strong>Teléfono:</strong> {{ c.telefono }}</p>
+          <p><strong>Trabajo:</strong> {{ c.tipo_trabajo }}</p>
+          @if (c.direccion) {
+            <p><strong>Dirección:</strong> {{ c.direccion }}</p>
+          }
+          <p><strong>Descripción:</strong> {{ c.descripcion }}</p>
+          <p class="fecha">{{ c.created_at | date:'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <div class="card-actions">
+          <select (change)="cambiarEstado(c.id, $any($event.target).value)">
+            <option value="nueva" [selected]="c.estado === 'nueva'">Nueva</option>
+            <option value="en_revision" [selected]="c.estado === 'en_revision'">En revisión</option>
+            <option value="respondida" [selected]="c.estado === 'respondida'">Respondida</option>
+            <option value="cerrada" [selected]="c.estado === 'cerrada'">Cerrada</option>
+          </select>
+        </div>
+      </div>
+    }
+  </div>
+</main>

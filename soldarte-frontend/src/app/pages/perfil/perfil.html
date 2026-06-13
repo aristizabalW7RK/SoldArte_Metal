@@ -1,0 +1,20 @@
+<main class="perfil">
+  <div class="perfil-card">
+    <h1>Mi Perfil</h1>
+    <div class="perfil-info">
+      <div class="campo">
+        <span class="etiqueta">Nombre</span>
+        <span class="valor">{{ authService.nombre }}</span>
+      </div>
+      <div class="campo">
+        <span class="etiqueta">Email</span>
+        <span class="valor">{{ authService.email }}</span>
+      </div>
+      <div class="campo">
+        <span class="etiqueta">Rol</span>
+        <span class="valor rol">{{ authService.esAdmin ? 'Administrador' : 'Usuario' }}</span>
+      </div>
+    </div>
+    <a routerLink="/" class="btn-volver">← Volver al inicio</a>
+  </div>
+</main>

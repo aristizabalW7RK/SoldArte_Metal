@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { tap } from 'rxjs';
 import { ApiService } from './api';
 
@@ -25,7 +25,16 @@ export interface UsuarioResponse {
   nombre: string;
   email: string;
   telefono: string | null;
+  es_admin: boolean;
   created_at: string;
+}
+
+interface JwtPayload {
+  sub: string;
+  nombre: string;
+  email: string;
+  es_admin: boolean;
+  exp: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -33,18 +42,57 @@ export class AuthService {
   private api = inject(ApiService);
   private readonly TOKEN_KEY = 'soldarte-token';
 
+  usuario = signal<{
+    id: number;
+    nombre: string;
+    email: string;
+    es_admin: boolean;
+  } | null>(null);
+
+  constructor() {
+    this.cargarUsuarioDesdeToken();
+  }
+
+  private cargarUsuarioDesdeToken() {
+    const payload = this.obtenerPayload();
+    if (payload) {
+      this.usuario.set({
+        id: Number(payload['sub']),
+        nombre: (payload['nombre'] as string) ?? 'Usuario',
+        email: (payload['email'] as string) ?? '',
+        es_admin: (payload['es_admin'] as boolean) ?? false,
+      });
+    }
+  }
+
+  private obtenerPayload(): Record<string, unknown> | null {
+    const t = this.token;
+    if (!t) return null;
+    try {
+      return JSON.parse(atob(t.split('.')[1]));
+    } catch {
+      return null;
+    }
+  }
+
   get token(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
   get usuarioId(): number | null {
-    const t = this.token;
-    if (!t) return null;
-    try {
-      return Number(JSON.parse(atob(t.split('.')[1])).sub);
-    } catch {
-      return null;
-    }
+    return this.usuario()?.id ?? null;
+  }
+
+  get nombre(): string | null {
+    return this.usuario()?.nombre ?? null;
+  }
+
+  get email(): string | null {
+    return this.usuario()?.email ?? null;
+  }
+
+  get esAdmin(): boolean {
+    return this.usuario()?.es_admin ?? false;
   }
 
   get estaAutenticado(): boolean {
@@ -57,11 +105,15 @@ export class AuthService {
 
   login(datos: LoginData) {
     return this.api.post<TokenResponse>('/api/auth/login', datos).pipe(
-      tap(res => localStorage.setItem(this.TOKEN_KEY, res.access_token)),
+      tap(res => {
+        localStorage.setItem(this.TOKEN_KEY, res.access_token);
+        this.cargarUsuarioDesdeToken();
+      }),
     );
   }
 
   logout() {
     localStorage.removeItem(this.TOKEN_KEY);
+    this.usuario.set(null);
   }
 }

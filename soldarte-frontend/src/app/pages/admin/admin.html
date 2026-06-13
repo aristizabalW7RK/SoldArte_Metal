@@ -1,0 +1,22 @@
+<main class="admin">
+  <h1>Panel de Administración</h1>
+  <p class="admin-sub">Bienvenido, {{ authService.nombre }}</p>
+
+  <div class="admin-grid">
+    <a routerLink="/admin/productos" class="admin-card">
+      <span class="admin-icon">📦</span>
+      <h3>Productos</h3>
+      <p>Gestionar catálogo de productos</p>
+    </a>
+    <a routerLink="/admin/portafolio" class="admin-card">
+      <span class="admin-icon">🖼️</span>
+      <h3>Portafolio</h3>
+      <p>Administrar obras y categorías</p>
+    </a>
+    <a routerLink="/admin/cotizaciones" class="admin-card">
+      <span class="admin-icon">📋</span>
+      <h3>Cotizaciones</h3>
+      <p>Revisar solicitudes recibidas</p>
+    </a>
+  </div>
+</main>

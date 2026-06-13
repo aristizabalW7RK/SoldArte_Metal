@@ -14,6 +14,9 @@ export class Portafolio {
   obras = signal<Obra[]>([]);
   categoriaSeleccionada = signal<number | null>(null);
   cargando = signal(true);
+  imagenSeleccionada = signal<string | null>(null);
+  indiceImagen = signal(0);
+  obraActual = signal<Obra | null>(null);
 
   obrasFiltradas = computed(() => {
     const catId = this.categoriaSeleccionada();
@@ -22,16 +25,51 @@ export class Portafolio {
   });
 
   constructor() {
-    this.portafolioService.obtenerCategorias().subscribe(cats => {
-      this.categorias.set(cats);
+    this.portafolioService.obtenerCategorias().subscribe({
+      next: cats => this.categorias.set(cats),
+      error: () => this.cargando.set(false),
     });
-    this.portafolioService.obtenerObras().subscribe(obras => {
-      this.obras.set(obras);
-      this.cargando.set(false);
+    this.portafolioService.obtenerObras().subscribe({
+      next: obras => {
+        this.obras.set(obras);
+        this.cargando.set(false);
+      },
+      error: () => this.cargando.set(false),
     });
   }
 
   filtrarPorCategoria(id: number | null) {
     this.categoriaSeleccionada.set(id);
+  }
+
+  abrirLightbox(obra: Obra, indice: number) {
+    this.obraActual.set(obra);
+    this.indiceImagen.set(indice);
+    this.imagenSeleccionada.set(obra.imagenes[indice].url);
+  }
+
+  anteriorImagen() {
+    const obra = this.obraActual();
+    if (!obra) return;
+    const nuevo = this.indiceImagen() - 1;
+    if (nuevo >= 0) {
+      this.indiceImagen.set(nuevo);
+      this.imagenSeleccionada.set(obra.imagenes[nuevo].url);
+    }
+  }
+
+  siguienteImagen() {
+    const obra = this.obraActual();
+    if (!obra) return;
+    const nuevo = this.indiceImagen() + 1;
+    if (nuevo < obra.imagenes.length) {
+      this.indiceImagen.set(nuevo);
+      this.imagenSeleccionada.set(obra.imagenes[nuevo].url);
+    }
+  }
+
+  cerrarLightbox() {
+    this.imagenSeleccionada.set(null);
+    this.obraActual.set(null);
   }
 }

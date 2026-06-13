@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from backend.core.database import get_db
+from backend.core.deps import get_current_user
 from backend.core.security import hash_password, verify_password, create_access_token
 from backend.models.models import Usuario
 from backend.schemas.schemas import UsuarioCreate, UsuarioOut, LoginSchema, TokenOut
@@ -28,5 +29,14 @@ def login(datos: LoginSchema, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == datos.email).first()
     if not usuario or not verify_password(datos.password, usuario.password_hash):
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
-    token = create_access_token({"sub": str(usuario.id)})
+    token = create_access_token({
+        "sub": str(usuario.id),
+        "nombre": usuario.nombre,
+        "email": usuario.email,
+        "es_admin": usuario.es_admin,
+    })
     return {"access_token": token}
+
+@router.get("/me", response_model=UsuarioOut)
+def obtener_perfil(usuario: Usuario = Depends(get_current_user)):
+    return usuario

@@ -1,0 +1,66 @@
+.perfil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+}
+
+.perfil-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2.5rem;
+  max-width: 480px;
+  width: 100%;
+}
+
+.perfil-card h1 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.perfil-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.etiqueta {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+
+.valor {
+  font-size: 1.05rem;
+}
+
+.valor.rol {
+  color: #e63946;
+  font-weight: 600;
+}
+
+.btn-volver {
+  display: block;
+  text-align: center;
+  padding: 0.7rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: border-color 0.3s;
+}
+
+.btn-volver:hover {
+  border-color: #e63946;
+}

@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 60px;
+  padding: 80px 1.5rem 1.5rem;
   background-color: var(--bg-primary);
 }
 
@@ -30,7 +30,7 @@
   font-family: 'Playfair Display', serif;
   font-size: 2.5rem;
   font-weight: 900;
-  line-height: 1;
+  line-height: 1.1;
   text-transform: uppercase;
   color: var(--text-primary);
 }
@@ -45,6 +45,12 @@
   line-height: 1.6;
   border-left: 3px solid #e63946;
   padding-left: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .form-group {
@@ -96,6 +102,7 @@
   color: var(--text-secondary);
   font-size: 0.9rem;
   text-align: center;
+  margin-top: 0.5rem;
 }
 
 .login-registro a {

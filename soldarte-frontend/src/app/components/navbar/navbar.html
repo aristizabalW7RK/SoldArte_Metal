@@ -15,8 +15,26 @@
   <li><a routerLink="/portafolio" routerLinkActive="active">Portafolio</a></li>
   <li><a routerLink="/productos" routerLinkActive="active">Productos</a></li>
   <li><a routerLink="/cotizacion" routerLinkActive="active">Cotización</a></li>
-  <li><a routerLink="/login" routerLinkActive="active">Ingresar</a></li>
-  <li><a routerLink="/registro" routerLinkActive="active">Registrarse</a></li>
+    @if (authService.estaAutenticado) {
+      @if (authService.esAdmin) {
+        <li><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
+      }
+      <li class="usuario-dropdown">
+        <button class="btn-usuario" (click)="toggleUsuario()">
+          {{ authService.nombre }}
+          <span class="flecha">{{ usuarioDesplegado() ? '▲' : '▼' }}</span>
+        </button>
+        @if (usuarioDesplegado()) {
+          <ul class="dropdown-menu">
+            <li><a routerLink="/perfil" (click)="usuarioDesplegado.set(false)">Mi Perfil</a></li>
+            <li><a (click)="logout()">Cerrar Sesión</a></li>
+          </ul>
+        }
+      </li>
+    } @else {
+      <li><a routerLink="/login" routerLinkActive="active">Ingresar</a></li>
+      <li><a routerLink="/registro" routerLinkActive="active">Registrarse</a></li>
+    }
   <li>
     <button class="btn-tema" (click)="temaService.toggleTema()"
       [attr.aria-label]="temaService.oscuro() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
@@ -37,8 +55,16 @@
       <li><a routerLink="/portafolio" routerLinkActive="active" (click)="toggleMenu()">Portafolio</a></li>
       <li><a routerLink="/productos" routerLinkActive="active" (click)="toggleMenu()">Productos</a></li>
       <li><a routerLink="/cotizacion" routerLinkActive="active" (click)="toggleMenu()">Cotización</a></li>
-      <li><a routerLink="/login" routerLinkActive="active" (click)="toggleMenu()">Ingresar</a></li>
-      <li><a routerLink="/registro" routerLinkActive="active" (click)="toggleMenu()">Registrarse</a></li>
+      @if (authService.estaAutenticado) {
+        @if (authService.esAdmin) {
+          <li><a routerLink="/admin" routerLinkActive="active" (click)="toggleMenu()">Admin</a></li>
+        }
+        <li><a routerLink="/perfil" routerLinkActive="active" (click)="toggleMenu()">Mi Perfil</a></li>
+        <li><a (click)="logout(); toggleMenu()">Cerrar Sesión</a></li>
+      } @else {
+        <li><a routerLink="/login" routerLinkActive="active" (click)="toggleMenu()">Ingresar</a></li>
+        <li><a routerLink="/registro" routerLinkActive="active" (click)="toggleMenu()">Registrarse</a></li>
+      }
       <li>
         <button class="btn-tema btn-tema-movil" (click)="temaService.toggleTema(); toggleMenu()"
           [attr.aria-label]="temaService.oscuro() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">

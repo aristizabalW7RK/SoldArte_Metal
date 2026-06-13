@@ -1,0 +1,82 @@
+<main class="admin-productos">
+  <div class="admin-header">
+    <a routerLink="/admin" class="btn-volver">← Admin</a>
+    <h1>Gestionar Productos</h1>
+  </div>
+
+  <div class="admin-grid">
+    <section class="form-section">
+      <h2>Nuevo Producto</h2>
+
+      @if (error()) {
+        <div class="error-mensaje">{{ error() }}</div>
+      }
+      @if (exitoso()) {
+        <div class="exito-mensaje">Producto creado correctamente</div>
+      }
+
+      <form (ngSubmit)="crearProducto()">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input type="text" [(ngModel)]="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea [(ngModel)]="descripcion" name="descripcion" rows="3"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Referencia</label>
+            <input type="text" [(ngModel)]="referencia" name="referencia">
+          </div>
+          <div class="form-group">
+            <label>Precio *</label>
+            <input type="number" step="0.01" [(ngModel)]="precio" name="precio" required (keydown)="error.set('')">
+          </div>
+          <div class="form-group">
+            <label>Stock</label>
+            <input type="number" [(ngModel)]="stock" name="stock">
+          </div>
+        </div>
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="disponible" name="disponible">
+            Disponible
+          </label>
+        </div>
+        <button class="btn-crear" type="submit" [disabled]="cargando()">
+          {{ cargando() ? 'Creando...' : 'Crear Producto' }}
+        </button>
+      </form>
+
+      @if (productoIdImagen) {
+        <div class="imagen-upload">
+          <h3>¿Agregar imagen?</h3>
+          <input type="file" accept="image/*" (change)="onImagenSeleccionada($event)">
+          @if (imagenFile) {
+            <button class="btn-subir" (click)="subirImagen(productoIdImagen!)">Subir Imagen</button>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="list-section">
+      <h2>Productos Existentes ({{ productos().length }})</h2>
+      <div class="productos-lista">
+        @for (p of productos(); track p.id) {
+          <div class="producto-item">
+            @if (p.imagen_url) {
+              <img [src]="p.imagen_url" [alt]="p.nombre" class="producto-thumb">
+            }
+            <div class="producto-info">
+              <strong>{{ p.nombre }}</strong>
+              <span class="ref">{{ p.referencia }}</span>
+              <span class="precio">${{ p.precio }}</span>
+              <span class="stock" [class.agotado]="p.stock === 0">Stock: {{ p.stock }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</main>

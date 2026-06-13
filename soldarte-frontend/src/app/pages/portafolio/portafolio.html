@@ -32,12 +32,20 @@
       @for (obra of obrasFiltradas(); track obra.id) {
         <article class="obra-card">
           <div class="obra-imagen-wrapper">
-            <img
-              [src]="obra.imagenes[0]?.url || 'placeholder.jpg'"
-              [alt]="obra.titulo"
-              class="obra-imagen"
-              loading="lazy"
-            />
+            @if (obra.imagenes.length > 0) {
+              <img
+                [src]="obra.imagenes[0].url"
+                [alt]="obra.titulo"
+                class="obra-imagen"
+                loading="lazy"
+                (click)="abrirLightbox(obra, 0)"
+              />
+              @if (obra.imagenes.length > 1) {
+                <span class="img-count-badge" (click)="abrirLightbox(obra, 0)">+{{ obra.imagenes.length - 1 }}</span>
+              }
+            } @else {
+              <div class="obra-sin-imagen">Sin imagen</div>
+            }
           </div>
           <div class="obra-info">
             <span class="obra-categoria">{{ obra.categoria.nombre }}</span>
@@ -55,3 +63,17 @@
   }
 
 </main>
+
+@if (imagenSeleccionada()) {
+  <div class="lightbox-overlay" (click)="cerrarLightbox()">
+    <button class="lightbox-cerrar" (click)="cerrarLightbox()">✕</button>
+    @if (indiceImagen() > 0) {
+      <button class="lightbox-nav lightbox-prev" (click)="$event.stopPropagation(); anteriorImagen()">‹</button>
+    }
+    <img [src]="imagenSeleccionada()" class="lightbox-img" (click)="$event.stopPropagation()">
+    @if (obraActual() && indiceImagen() < obraActual()!.imagenes.length - 1) {
+      <button class="lightbox-nav lightbox-next" (click)="$event.stopPropagation(); siguienteImagen()">›</button>
+    }
+    <div class="lightbox-contador">{{ indiceImagen() + 1 }} / {{ obraActual()?.imagenes?.length }}</div>
+  </div>
+}
