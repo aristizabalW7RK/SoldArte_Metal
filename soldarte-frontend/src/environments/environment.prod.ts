@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'https://soldarte-api.up.railway.app',
+  apiUrl: 'https://soldartemetal-production.up.railway.app',
 };
