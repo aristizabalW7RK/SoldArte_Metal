@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { finalize } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { ApiService } from './api';
 
 export interface LoginData {
@@ -85,7 +85,9 @@ export class AuthService {
   }
 
   login(datos: LoginData) {
-    return this.api.post<UsuarioResponse>('/api/auth/login', datos);
+    return this.api.post<UsuarioResponse>('/api/auth/login', datos).pipe(
+      tap(res => this.usuario.set(res)),
+    );
   }
 
   logout() {
