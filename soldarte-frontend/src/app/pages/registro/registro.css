@@ -172,6 +172,37 @@ form {
   cursor: not-allowed;
 }
 
+.pw-requisitos {
+  list-style: none;
+  padding: 0;
+  margin: 0.3rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  font-size: 0.75rem;
+}
+
+.pw-requisitos li {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.pw-requisitos li::before {
+  content: '○ ';
+}
+
+.pw-requisitos li.cumplido {
+  color: #2ecc71;
+}
+
+.pw-requisitos li.cumplido::before {
+  content: '● ';
+}
+
+.pw-requisitos li.incumplido {
+  color: #e63946;
+}
+
 @media (max-width: 900px) {
   .registro {
     flex-direction: column;

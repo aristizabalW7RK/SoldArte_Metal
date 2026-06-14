@@ -37,6 +37,13 @@
       <div class="form-group">
         <label>Contraseña</label>
         <input type="password" placeholder="••••••••" [(ngModel)]="password" name="password" required>
+        <ul class="pw-requisitos">
+          <li [class.cumplido]="pwLargo()" [class.incumplido]="!pwLargo() && password()">8+ caracteres</li>
+          <li [class.cumplido]="pwMayuscula()" [class.incumplido]="!pwMayuscula() && password()">1 mayúscula</li>
+          <li [class.cumplido]="pwMinuscula()" [class.incumplido]="!pwMinuscula() && password()">1 minúscula</li>
+          <li [class.cumplido]="pwNumero()" [class.incumplido]="!pwNumero() && password()">1 número</li>
+          <li [class.cumplido]="pwSimbolo()" [class.incumplido]="!pwSimbolo() && password()">1 símbolo especial</li>
+        </ul>
       </div>
       <button class="btn-registro" type="submit" [disabled]="cargando()">
         {{ cargando() ? 'Creando cuenta...' : 'CREAR CUENTA' }}

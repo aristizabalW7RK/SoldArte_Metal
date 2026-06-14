@@ -3,6 +3,8 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 @Component({
   selector: 'app-login',
   imports: [RouterLink, FormsModule],
@@ -21,6 +23,10 @@ export class Login {
   iniciarSesion() {
     if (!this.email() || !this.password()) {
       this.error.set('Todos los campos son obligatorios');
+      return;
+    }
+    if (!EMAIL_RE.test(this.email())) {
+      this.error.set('El correo electrónico no es válido');
       return;
     }
     this.cargando.set(true);

@@ -20,7 +20,7 @@ class TestCotizaciones:
         user = client.post("/api/auth/registro", json={
             "nombre": "Juan",
             "email": "jcot@example.com",
-            "password": "123",
+            "password": "Cotiz4!#",
         }).json()
         response = client.post("/api/cotizaciones", json={
             "nombre_cliente": "Juan Pérez",

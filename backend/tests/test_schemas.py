@@ -18,32 +18,51 @@ class TestUsuarioCreate:
         data = UsuarioCreate(
             nombre="Juan Pérez",
             email="juan@example.com",
-            password="secret123",
+            password="Secret123!",
+            telefono="3001234567",
         )
         assert data.nombre == "Juan Pérez"
-        assert data.telefono is None
+        assert data.telefono == "3001234567"
 
     def test_missing_email(self):
         with pytest.raises(ValidationError):
-            UsuarioCreate(nombre="Juan", password="123")
+            UsuarioCreate(nombre="Juan", password="Pass123!")
 
     def test_invalid_email(self):
         with pytest.raises(ValidationError):
             UsuarioCreate(
                 nombre="Juan",
                 email="no-es-un-email",
-                password="123",
+                password="Pass123!",
             )
+
+    def test_telefono_invalido(self):
+        with pytest.raises(ValidationError):
+            UsuarioCreate(
+                nombre="Juan",
+                email="juan@example.com",
+                password="Secret123!",
+                telefono="12345",
+            )
+
+    def test_telefono_con_codigo_pais(self):
+        data = UsuarioCreate(
+            nombre="Juan",
+            email="juan@example.com",
+            password="Secret123!",
+            telefono="+573001234567",
+        )
+        assert data.telefono == "+573001234567"
 
 
 class TestLoginSchema:
     def test_valid(self):
-        data = LoginSchema(email="test@test.com", password="pass")
+        data = LoginSchema(email="test@test.com", password="Pass123!")
         assert data.email == "test@test.com"
 
     def test_invalid_email(self):
         with pytest.raises(ValidationError):
-            LoginSchema(email="invalido", password="pass")
+            LoginSchema(email="invalido", password="Pass123!")
 
 
 class TestCategoriaCreate:

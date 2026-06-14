@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     UPLOAD_DIR: str = "uploads_data"
-    ADMIN_EMAIL: str = "admin@soldarte.com"
+    ADMIN_EMAIL: str = "soldartemetalorg@gmail.com"
     ADMIN_PASSWORD: str = "Admin123!"
     DEBUG: bool = True
 

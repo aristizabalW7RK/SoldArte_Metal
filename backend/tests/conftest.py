@@ -59,12 +59,14 @@ def _get_token(resp):
     return resp.cookies.get("soldarte_token")
 
 
+_TEST_PASSWORD = "TestPass1!"
+
 @pytest.fixture
 def auth_headers(client):
     user_resp = client.post("/api/auth/registro", json={
         "nombre": "Admin",
         "email": "admin@test.com",
-        "password": "testpass",
+        "password": _TEST_PASSWORD,
     }).json()
     db = TestSessionLocal()
     from backend.models.models import Usuario as UsuarioModel
@@ -75,7 +77,7 @@ def auth_headers(client):
 
     resp = client.post("/api/auth/login", json={
         "email": "admin@test.com",
-        "password": "testpass",
+        "password": _TEST_PASSWORD,
     })
     token = _get_token(resp)
     return {"Authorization": f"Bearer {token}"}
@@ -86,11 +88,11 @@ def auth_data(client):
     user_resp = client.post("/api/auth/registro", json={
         "nombre": "Normal User",
         "email": "normal@test.com",
-        "password": "testpass",
+        "password": _TEST_PASSWORD,
     }).json()
     resp = client.post("/api/auth/login", json={
         "email": "normal@test.com",
-        "password": "testpass",
+        "password": _TEST_PASSWORD,
     })
     token = _get_token(resp)
     return {
@@ -104,7 +106,7 @@ def admin_data(client):
     user_resp = client.post("/api/auth/registro", json={
         "nombre": "Admin",
         "email": "admin@test.com",
-        "password": "testpass",
+        "password": _TEST_PASSWORD,
     }).json()
     db = TestSessionLocal()
     from backend.models.models import Usuario as UsuarioModel
@@ -115,7 +117,7 @@ def admin_data(client):
 
     resp = client.post("/api/auth/login", json={
         "email": "admin@test.com",
-        "password": "testpass",
+        "password": _TEST_PASSWORD,
     })
     token = _get_token(resp)
     return {
