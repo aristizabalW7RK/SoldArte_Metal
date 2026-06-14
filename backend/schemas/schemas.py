@@ -124,8 +124,15 @@ class CotizacionCreate(BaseModel):
             return limpio
         raise ValueError("Debe ser un celular colombiano (ej: 3001111111)")
 
-class CotizacionOut(CotizacionCreate):
+class CotizacionOut(BaseModel):
     id: int
+    nombre_cliente: str
+    telefono: str
+    email: str
+    tipo_trabajo: str
+    descripcion: str
+    direccion: Optional[str] = None
+    usuario_id: Optional[int] = None
     estado: str
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)

@@ -164,6 +164,51 @@
   padding: 0.5rem 0;
 }
 
+.nav-social a {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+  padding: 4px;
+}
+
+.nav-social a:hover {
+  color: #e63946;
+}
+
+.nav-social-movil {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.nav-social-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.nav-social-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-social-icons a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-social-icons a:hover {
+  color: #e63946;
+}
+
 .btn-tema {
   background: none;
   border: none;
