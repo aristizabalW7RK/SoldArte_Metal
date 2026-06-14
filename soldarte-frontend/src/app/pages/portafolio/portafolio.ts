@@ -1,9 +1,10 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { PortafolioService, Categoria, Obra } from '../../services/portafolio';
+import { SkeletonComponent } from '../../components/skeleton/skeleton';
 
 @Component({
   selector: 'app-portafolio',
-  imports: [],
+  imports: [SkeletonComponent],
   templateUrl: './portafolio.html',
   styleUrl: './portafolio.css',
 })
@@ -14,6 +15,7 @@ export class Portafolio {
   obras = signal<Obra[]>([]);
   categoriaSeleccionada = signal<number | null>(null);
   cargando = signal(true);
+  error = signal('');
   imagenSeleccionada = signal<string | null>(null);
   indiceImagen = signal(0);
   obraActual = signal<Obra | null>(null);
@@ -25,17 +27,30 @@ export class Portafolio {
   });
 
   constructor() {
+    this.cargarDatos();
+  }
+
+  private cargarDatos() {
+    this.cargando.set(true);
+    this.error.set('');
     this.portafolioService.obtenerCategorias().subscribe({
       next: cats => this.categorias.set(cats),
-      error: () => this.cargando.set(false),
+      error: () => {},
     });
     this.portafolioService.obtenerObras().subscribe({
       next: obras => {
         this.obras.set(obras);
         this.cargando.set(false);
       },
-      error: () => this.cargando.set(false),
+      error: () => {
+        this.error.set('Error al cargar el portafolio. Intenta de nuevo más tarde.');
+        this.cargando.set(false);
+      },
     });
+  }
+
+  reintentar() {
+    this.cargarDatos();
   }
 
   filtrarPorCategoria(id: number | null) {

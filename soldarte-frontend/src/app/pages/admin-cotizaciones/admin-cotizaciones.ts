@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ApiService } from '../../services/api';
+import { SkeletonComponent } from '../../components/skeleton/skeleton';
 
 interface CotizacionAdmin {
   id: number;
@@ -17,7 +18,7 @@ interface CotizacionAdmin {
 
 @Component({
   selector: 'app-admin-cotizaciones',
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, SkeletonComponent],
   templateUrl: './admin-cotizaciones.html',
   styleUrl: './admin-cotizaciones.css',
 })

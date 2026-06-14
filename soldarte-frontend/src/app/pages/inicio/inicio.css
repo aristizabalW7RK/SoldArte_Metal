@@ -179,3 +179,83 @@
   border-color: #e63946;
   color: #e63946;
 }
+
+@media (max-width: 768px) {
+  .hero-logo img {
+    width: 300px;
+  }
+
+  .hero-eslogan {
+    margin-top: -3rem;
+    font-size: 1.1rem;
+  }
+
+  .sobre-contenido {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .sobre-texto h2 {
+    font-size: 1.6rem;
+  }
+
+  .servicios {
+    flex-direction: column;
+    padding: 3rem 1.5rem;
+  }
+
+  .servicios-derecha {
+    padding-left: 0;
+    padding-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-logo img {
+    width: 260px;
+  }
+
+  .hero-eslogan {
+    margin-top: -2rem;
+    font-size: 1rem;
+  }
+
+  .sobre-nosotros {
+    padding: 3rem 1.2rem;
+  }
+
+  .sobre-texto h2 {
+    font-size: 1.4rem;
+  }
+
+  .sobre-texto p {
+    font-size: 0.9rem;
+  }
+
+  .servicios {
+    padding: 2rem 1rem;
+  }
+
+  .servicios-titulo {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .servicios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .servicios-derecha h3 {
+    font-size: 1.4rem;
+  }
+
+  .servicios-derecha p {
+    font-size: 0.9rem;
+  }
+
+  .btn-primario,
+  .btn-secundario {
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}

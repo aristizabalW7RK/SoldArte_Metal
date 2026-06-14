@@ -151,11 +151,32 @@
 }
 
 .portafolio-cargando,
-.portafolio-vacio {
+.portafolio-vacio,
+.portafolio-error {
   text-align: center;
   padding: 4rem;
   color: var(--text-secondary);
   font-size: 1.1rem;
+}
+
+.portafolio-error {
+  color: var(--acento);
+}
+
+.btn-reintentar {
+  margin-top: 1rem;
+  padding: 0.6rem 1.5rem;
+  background-color: var(--acento);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.btn-reintentar:hover {
+  opacity: 0.85;
 }
 
 @media (max-width: 1024px) {

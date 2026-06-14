@@ -21,6 +21,27 @@ def crear_categoria(datos: CategoriaCreate, db: Session = Depends(get_db), usuar
     db.refresh(categoria)
     return categoria
 
+@router.put("/categorias/{categoria_id}", response_model=CategoriaOut)
+def actualizar_categoria(categoria_id: int, datos: CategoriaCreate, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
+    categoria = db.query(Categoria).filter(Categoria.id == categoria_id).first()
+    if not categoria:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    for campo, valor in datos.model_dump().items():
+        setattr(categoria, campo, valor)
+    db.commit()
+    db.refresh(categoria)
+    return categoria
+
+@router.delete("/categorias/{categoria_id}", status_code=204)
+def eliminar_categoria(categoria_id: int, db: Session = Depends(get_db), usuario: Usuario = Depends(get_current_admin)):
+    categoria = db.query(Categoria).filter(Categoria.id == categoria_id).first()
+    if not categoria:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    if db.query(Obra).filter(Obra.categoria_id == categoria_id).first():
+        raise HTTPException(status_code=400, detail="No se puede eliminar una categoría con obras asociadas")
+    db.delete(categoria)
+    db.commit()
+
 # Obras
 @router.get("/obras", response_model=list[ObraOut])
 def listar_obras(categoria_id: int | None = None, destacado: bool | None = None, db: Session = Depends(get_db)):

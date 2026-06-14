@@ -24,7 +24,13 @@
   </div>
 
   @if (cargando()) {
-    <div class="portafolio-cargando">Cargando...</div>
+    <app-skeleton tipo="chip" [cantidad]="5" />
+    <app-skeleton tipo="card-grid" [cantidad]="6" [columnas]="3" />
+  } @else if (error()) {
+    <div class="portafolio-error">
+      <p>{{ error() }}</p>
+      <button class="btn-reintentar" (click)="reintentar()">Reintentar</button>
+    </div>
   } @else if (obrasFiltradas().length === 0) {
     <div class="portafolio-vacio">No hay obras en esta categoría.</div>
   } @else {

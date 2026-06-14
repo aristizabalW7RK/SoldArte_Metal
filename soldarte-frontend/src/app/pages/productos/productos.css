@@ -64,11 +64,16 @@
 }
 
 .productos-cargando,
-.productos-vacio {
+.productos-vacio,
+.productos-error {
   text-align: center;
   color: var(--text-secondary);
   padding: 4rem 1rem;
   font-size: 1.1rem;
+}
+
+.productos-error {
+  color: var(--acento);
 }
 
 .productos-grid {
@@ -171,4 +176,28 @@
 .producto-stock.sin-stock {
   color: #e63946;
   background-color: #e6394620;
+}
+
+@media (max-width: 768px) {
+  .productos-titulo {
+    font-size: 2rem;
+  }
+
+  .producto-precio {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .productos-titulo {
+    font-size: 1.6rem;
+  }
+
+  .productos-hero {
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .producto-precio {
+    font-size: 1rem;
+  }
 }

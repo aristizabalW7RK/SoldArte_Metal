@@ -13,7 +13,12 @@
   </div>
 
   @if (cargando()) {
-    <div class="productos-cargando">Cargando...</div>
+    <app-skeleton tipo="card-grid" [cantidad]="6" [columnas]="3" />
+  } @else if (error()) {
+    <div class="productos-error">
+      <p>{{ error() }}</p>
+      <button class="btn-reintentar" (click)="cargarProductos()">Reintentar</button>
+    </div>
   } @else if (productos().length === 0) {
     <div class="productos-vacio">No hay productos disponibles.</div>
   } @else {

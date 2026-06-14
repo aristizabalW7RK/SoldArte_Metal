@@ -10,6 +10,7 @@ import { Admin } from './pages/admin/admin';
 import { AdminProductos } from './pages/admin-productos/admin-productos';
 import { AdminPortafolio } from './pages/admin-portafolio/admin-portafolio';
 import { AdminCotizaciones } from './pages/admin-cotizaciones/admin-cotizaciones';
+import { NoEncontrado } from './pages/no-encontrado/no-encontrado';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 
@@ -25,5 +26,5 @@ export const routes: Routes = [
   { path: 'admin/productos', component: AdminProductos, canActivate: [adminGuard] },
   { path: 'admin/portafolio', component: AdminPortafolio, canActivate: [adminGuard] },
   { path: 'admin/cotizaciones', component: AdminCotizaciones, canActivate: [adminGuard] },
-  { path: '**', redirectTo: '' }
+  { path: '**', component: NoEncontrado }
 ];

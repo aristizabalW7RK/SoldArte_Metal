@@ -28,12 +28,14 @@ def _set_token_cookie(response: Response, token: str):
 
 @router.post("/registro", response_model=UsuarioOut, status_code=201)
 def registrar_usuario(datos: UsuarioCreate, db: Session = Depends(get_db)):
-    if db.query(Usuario).filter(Usuario.email == datos.email).first():
+    from sqlalchemy import func
+    email = datos.email.lower().strip()
+    if db.query(Usuario).filter(func.lower(Usuario.email) == email).first():
         raise HTTPException(status_code=400, detail="El email ya está registrado")
     usuario = Usuario(
         nombre=datos.nombre,
         telefono=datos.telefono,
-        email=datos.email,
+        email=email,
         password_hash=hash_password(datos.password),
         fecha_nacimiento=datos.fecha_nacimiento,
     )
@@ -45,7 +47,8 @@ def registrar_usuario(datos: UsuarioCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=UsuarioOut)
 def login(datos: LoginSchema, response: Response, db: Session = Depends(get_db)):
-    usuario = db.query(Usuario).filter(Usuario.email == datos.email).first()
+    from sqlalchemy import func
+    usuario = db.query(Usuario).filter(func.lower(Usuario.email) == func.lower(datos.email)).first()
     if not usuario:
         logger.warning(f"Login fallido: email no registrado — {datos.email}")
         raise HTTPException(status_code=401, detail="Credenciales inválidas")

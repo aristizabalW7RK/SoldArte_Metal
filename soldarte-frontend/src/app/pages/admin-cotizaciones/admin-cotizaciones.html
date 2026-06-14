@@ -9,7 +9,7 @@
   }
 
   @if (cargando()) {
-    <p class="cargando">Cargando...</p>
+    <app-skeleton tipo="card-list" [cantidad]="3" />
   }
 
   @if (cotizaciones().length === 0 && !cargando()) {

@@ -6,10 +6,16 @@
 
   <div class="admin-grid">
     <section class="form-section">
-      <h2>Nueva Categoría</h2>
+      <h2>
+        @if (catEditando()) {
+          Editar Categoría
+        } @else {
+          Nueva Categoría
+        }
+      </h2>
 
       @if (catError()) { <div class="error-mensaje">{{ catError() }}</div> }
-      @if (catExitoso()) { <div class="exito-mensaje">Categoría creada</div> }
+      @if (catExitoso()) { <div class="exito-mensaje">{{ catExitoso() }}</div> }
 
       <form (ngSubmit)="crearCategoria()">
         <div class="form-group">
@@ -20,15 +26,30 @@
           <label>Descripción</label>
           <input type="text" [(ngModel)]="catDescripcion" name="catDescripcion">
         </div>
-        <button class="btn-crear" type="submit" [disabled]="cargando()">Crear Categoría</button>
+        @if (catEditando()) {
+          <div class="form-actions">
+            <button class="btn-crear" type="submit" [disabled]="cargando()">
+              {{ cargando() ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+            <button class="btn-cancelar" type="button" (click)="cancelarEdicionCategoria()">Cancelar</button>
+          </div>
+        } @else {
+          <button class="btn-crear" type="submit" [disabled]="cargando()">Crear Categoría</button>
+        }
       </form>
     </section>
 
     <section class="form-section">
-      <h2>Nueva Obra</h2>
+      <h2>
+        @if (obraEditando()) {
+          Editar Obra
+        } @else {
+          Nueva Obra
+        }
+      </h2>
 
       @if (obrError()) { <div class="error-mensaje">{{ obrError() }}</div> }
-      @if (obrExitoso()) { <div class="exito-mensaje">Obra creada</div> }
+      @if (obrExitoso()) { <div class="exito-mensaje">{{ obrExitoso() }}</div> }
 
       <form (ngSubmit)="crearObra()">
         <div class="form-group">
@@ -61,12 +82,21 @@
         <div class="form-group checkbox-group">
           <label><input type="checkbox" [(ngModel)]="obrDestacado" name="obrDestacado"> Destacado</label>
         </div>
-        <button class="btn-crear" type="submit" [disabled]="cargando()">Crear Obra</button>
+        @if (obraEditando()) {
+          <div class="form-actions">
+            <button class="btn-crear" type="submit" [disabled]="cargando()">
+              {{ cargando() ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+            <button class="btn-cancelar" type="button" (click)="cancelarEdicionObra()">Cancelar</button>
+          </div>
+        } @else {
+          <button class="btn-crear" type="submit" [disabled]="cargando()">Crear Obra</button>
+        }
       </form>
     </section>
   </div>
 
-  @if (obraIdImagen() && obrExitoso()) {
+  @if (obraIdImagen() && obrExitoso() === 'Obra creada') {
     <section class="imagen-upload">
       <h3>Agregar imagen a la obra</h3>
       @if (imagenError()) {
@@ -85,20 +115,39 @@
     </section>
   }
 
-  <section class="list-section">
-    <h2>Categorías ({{ categorias().length }})</h2>
-    <div class="categorias-lista">
-      @for (c of categorias(); track c.id) {
-        <div class="chip">{{ c.nombre }}</div>
-      }
-    </div>
-  </section>
+  @if (cargandoLista()) {
+    <section class="list-section">
+      <h2>Categorías</h2>
+      <div class="categorias-lista">
+        <app-skeleton tipo="chip" [cantidad]="4" />
+      </div>
+    </section>
 
-  <section class="list-section">
-    <h2>Obras ({{ obras().length }})</h2>
-    <div class="obras-lista">
-      @for (o of obras(); track o.id) {
-        <div class="obra-card">
+    <section class="list-section">
+      <h2>Obras</h2>
+      <app-skeleton tipo="fila" [cantidad]="5" />
+    </section>
+  } @else {
+    <section class="list-section">
+      <h2>Categorías ({{ categorias().length }})</h2>
+      <div class="categorias-lista">
+        @for (c of categorias(); track c.id) {
+          <div class="chip">
+            <span>{{ c.nombre }}</span>
+            <div class="chip-acciones">
+              <button class="chip-btn editar" (click)="editarCategoria(c)" title="Editar categoría">✎</button>
+              <button class="chip-btn eliminar" (click)="eliminarCategoria(c.id)" title="Eliminar categoría">✕</button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="list-section">
+      <h2>Obras ({{ obras().length }})</h2>
+      <div class="obras-lista">
+        @for (o of obras(); track o.id) {
+        <div class="obra-card" [class.editando]="obraEditando()?.id === o.id">
           @if (o.imagenes.length > 0) {
             <img [src]="o.imagenes[0].url" [alt]="o.titulo" class="obra-thumb"
               (click)="imagenSeleccionada.set(o.imagenes[0].url)">
@@ -111,11 +160,15 @@
               <span class="img-count">{{ o.imagenes.length }} imágenes</span>
             }
           </div>
-          <button class="btn-eliminar" (click)="eliminarObra(o.id)" title="Eliminar obra">✕</button>
+          <div class="obra-card-acciones">
+            <button class="btn-editar" (click)="editarObra(o)" title="Editar obra">✎</button>
+            <button class="btn-eliminar" (click)="eliminarObra(o.id)" title="Eliminar obra">✕</button>
+          </div>
         </div>
       }
     </div>
   </section>
+  }
 </main>
 
 @if (imagenSeleccionada()) {

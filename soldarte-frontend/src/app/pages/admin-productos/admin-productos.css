@@ -42,6 +42,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .form-section,
 .list-section {
   background: var(--bg-secondary);
@@ -95,6 +101,15 @@
   width: auto;
 }
 
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-actions .btn-crear {
+  flex: 1;
+}
+
 .btn-crear {
   width: 100%;
   padding: 0.7rem;
@@ -105,6 +120,22 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
+}
+
+.btn-cancelar {
+  padding: 0.7rem 1rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.btn-cancelar:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
 }
 
 .btn-crear:hover {
@@ -209,8 +240,14 @@
   color: #e63946;
 }
 
-.btn-eliminar {
+.producto-item-acciones {
   margin-left: auto;
+  display: flex;
+  gap: 0.3rem;
+}
+
+.btn-editar,
+.btn-eliminar {
   background: none;
   border: 1px solid var(--border-color);
   border-radius: 6px;
@@ -221,7 +258,17 @@
   transition: color 0.2s, border-color 0.2s;
 }
 
+.btn-editar:hover {
+  color: #457b9d;
+  border-color: #457b9d;
+}
+
 .btn-eliminar:hover {
   color: #e63946;
   border-color: #e63946;
+}
+
+.producto-item.editando {
+  border-color: #457b9d;
+  background: #457b9d10;
 }

@@ -6,13 +6,19 @@
 
   <div class="admin-grid">
     <section class="form-section">
-      <h2>Nuevo Producto</h2>
+      <h2>
+        @if (productoEditando()) {
+          Editar Producto
+        } @else {
+          Nuevo Producto
+        }
+      </h2>
 
       @if (error()) {
         <div class="error-mensaje">{{ error() }}</div>
       }
       @if (exitoso()) {
-        <div class="exito-mensaje">Producto creado correctamente</div>
+        <div class="exito-mensaje">{{ exitoso() }}</div>
       }
 
       <form (ngSubmit)="crearProducto()">
@@ -44,12 +50,21 @@
             Disponible
           </label>
         </div>
-        <button class="btn-crear" type="submit" [disabled]="cargando()">
-          {{ cargando() ? 'Creando...' : 'Crear Producto' }}
-        </button>
+        @if (productoEditando()) {
+          <div class="form-actions">
+            <button class="btn-crear" type="submit" [disabled]="cargando()">
+              {{ cargando() ? 'Guardando...' : 'Guardar Cambios' }}
+            </button>
+            <button class="btn-cancelar" type="button" (click)="cancelarEdicionProducto()">Cancelar</button>
+          </div>
+        } @else {
+          <button class="btn-crear" type="submit" [disabled]="cargando()">
+            {{ cargando() ? 'Creando...' : 'Crear Producto' }}
+          </button>
+        }
       </form>
 
-      @if (productoIdImagen) {
+      @if (productoIdImagen && !productoEditando()) {
         <div class="imagen-upload">
           <h3>¿Agregar imagen?</h3>
           <input type="file" accept="image/*" (change)="onImagenSeleccionada($event)">
@@ -60,11 +75,17 @@
       }
     </section>
 
-    <section class="list-section">
-      <h2>Productos Existentes ({{ productos().length }})</h2>
-      <div class="productos-lista">
-        @for (p of productos(); track p.id) {
-          <div class="producto-item">
+    @if (cargandoLista()) {
+      <section class="list-section">
+        <h2>Productos</h2>
+        <app-skeleton tipo="fila" [cantidad]="5" />
+      </section>
+    } @else {
+      <section class="list-section">
+        <h2>Productos Existentes ({{ productos().length }})</h2>
+        <div class="productos-lista">
+          @for (p of productos(); track p.id) {
+          <div class="producto-item" [class.editando]="productoEditando()?.id === p.id">
             @if (p.imagen_url) {
               <img [src]="p.imagen_url" [alt]="p.nombre" class="producto-thumb">
             }
@@ -73,12 +94,15 @@
               <span class="ref">{{ p.referencia }}</span>
               <span class="precio">${{ p.precio }}</span>
               <span class="stock" [class.agotado]="p.stock === 0">Stock: {{ p.stock }}</span>
-              <span class="stock" [class.agotado]="p.stock === 0">Stock: {{ p.stock }}</span>
             </div>
-            <button class="btn-eliminar" (click)="eliminarProducto(p.id)" title="Eliminar producto">✕</button>
+            <div class="producto-item-acciones">
+              <button class="btn-editar" (click)="editarProducto(p)" title="Editar producto">✎</button>
+              <button class="btn-eliminar" (click)="eliminarProducto(p.id)" title="Eliminar producto">✕</button>
+            </div>
           </div>
         }
       </div>
     </section>
+    }
   </div>
 </main>

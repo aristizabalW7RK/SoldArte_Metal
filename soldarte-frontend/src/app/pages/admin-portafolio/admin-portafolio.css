@@ -43,6 +43,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 .form-section {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -95,6 +101,15 @@
   width: auto;
 }
 
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-actions .btn-crear {
+  flex: 1;
+}
+
 .btn-crear {
   width: 100%;
   padding: 0.7rem;
@@ -105,6 +120,22 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
+}
+
+.btn-cancelar {
+  padding: 0.7rem 1rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.btn-cancelar:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
 }
 
 .btn-crear:hover { background: #c1121f; }
@@ -140,11 +171,40 @@
 }
 
 .chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 0.3rem 0.8rem;
   font-size: 0.85rem;
+}
+
+.chip-acciones {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.chip-btn {
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  color: var(--text-secondary);
+}
+
+.chip-btn.editar:hover {
+  color: #457b9d;
+  background: #457b9d20;
+}
+
+.chip-btn.eliminar:hover {
+  color: #e63946;
+  background: #e6394620;
 }
 
 .obras-lista {
@@ -162,8 +222,14 @@
   border-radius: 8px;
 }
 
-.btn-eliminar {
+.obra-card-acciones {
   margin-left: auto;
+  display: flex;
+  gap: 0.3rem;
+}
+
+.btn-editar,
+.btn-eliminar {
   background: none;
   border: 1px solid var(--border-color);
   border-radius: 6px;
@@ -174,9 +240,19 @@
   transition: color 0.2s, border-color 0.2s;
 }
 
+.btn-editar:hover {
+  color: #457b9d;
+  border-color: #457b9d;
+}
+
 .btn-eliminar:hover {
   color: #e63946;
   border-color: #e63946;
+}
+
+.obra-card.editando {
+  border-color: #457b9d;
+  background: #457b9d10;
 }
 .obra-card h4 { margin: 0; font-size: 1rem; }
 

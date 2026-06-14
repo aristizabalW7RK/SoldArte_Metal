@@ -2,7 +2,7 @@ from backend.core.config import settings
 from backend.core.database import SessionLocal
 from backend.core.security import hash_password, verify_password
 from backend.models.models import Usuario, Categoria, Obra, ImagenObra
-from sqlalchemy import text
+from sqlalchemy import text, func
 import os, shutil
 
 
@@ -22,16 +22,17 @@ def copiar_imagenes_seed():
 def seed_admin():
     db = SessionLocal()
     try:
-        admin = db.query(Usuario).filter(Usuario.email == settings.ADMIN_EMAIL).first()
+        admin_email = settings.ADMIN_EMAIL.lower().strip()
+        admin = db.query(Usuario).filter(func.lower(Usuario.email) == admin_email).first()
         if not admin:
             db.add(Usuario(
                 nombre="Administrador",
-                email=settings.ADMIN_EMAIL,
+                email=admin_email,
                 password_hash=hash_password(settings.ADMIN_PASSWORD),
                 es_admin=True,
             ))
             db.commit()
-            print(f"  ✓ Admin creado: {settings.ADMIN_EMAIL}")
+            print(f"  ✓ Admin creado: {admin_email}")
         elif not verify_password(settings.ADMIN_PASSWORD, admin.password_hash):
             admin.password_hash = hash_password(settings.ADMIN_PASSWORD)
             db.commit()
@@ -127,27 +128,28 @@ def ensure_admin():
     try:
         admin = db.query(Usuario).filter(Usuario.es_admin == True).first()
         pw_hash = hash_password(settings.ADMIN_PASSWORD)
+        admin_email = settings.ADMIN_EMAIL.lower().strip()
         if not admin:
             db.add(Usuario(
                 nombre="Administrador",
-                email=settings.ADMIN_EMAIL,
+                email=admin_email,
                 password_hash=pw_hash,
                 es_admin=True,
             ))
             db.commit()
-            print(f"  ✓ Admin creado: {settings.ADMIN_EMAIL}")
+            print(f"  ✓ Admin creado: {admin_email}")
         else:
             cambios = False
-            if admin.email != settings.ADMIN_EMAIL:
-                admin.email = settings.ADMIN_EMAIL
+            if admin.email.lower() != admin_email:
+                admin.email = admin_email
                 cambios = True
             if not verify_password(settings.ADMIN_PASSWORD, admin.password_hash):
                 admin.password_hash = pw_hash
-                admin.email = settings.ADMIN_EMAIL
+                admin.email = admin_email
                 cambios = True
             if cambios:
                 db.commit()
-                print(f"  ✓ Admin sincronizado: {settings.ADMIN_EMAIL}")
+                print(f"  ✓ Admin sincronizado: {admin_email}")
     except Exception as e:
         print(f"  ! Error al sincronizar admin: {e}")
     finally:
