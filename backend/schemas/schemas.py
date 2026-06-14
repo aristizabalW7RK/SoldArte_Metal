@@ -30,9 +30,14 @@ class UsuarioCreate(BaseModel):
     @field_validator("telefono")
     @classmethod
     def telefono_colombiano(cls, v: Optional[str]) -> Optional[str]:
-        if v is not None and not re.match(r"^(\+57)?3\d{9}$", v):
-            raise ValueError("El teléfono debe ser un número celular colombiano válido (ej: 3001234567 o +573001234567)")
-        return v
+        if v is None:
+            return v
+        limpio = v.replace(" ", "").replace("-", "")
+        if re.match(r"^3\d{9}$", limpio):
+            return f"+57{limpio}"
+        if re.match(r"^\+57\d{10}$", limpio):
+            return limpio
+        raise ValueError("Debe ser un celular colombiano (ej: 3041431918)")
 
 class UsuarioOut(BaseModel):
     id: int
@@ -108,6 +113,16 @@ class CotizacionCreate(BaseModel):
     descripcion: str
     direccion: Optional[str] = None
     usuario_id: Optional[int] = None
+
+    @field_validator("telefono")
+    @classmethod
+    def telefono_colombiano(cls, v: str) -> str:
+        limpio = v.replace(" ", "").replace("-", "")
+        if re.match(r"^3\d{9}$", limpio):
+            return f"+57{limpio}"
+        if re.match(r"^\+57\d{10}$", limpio):
+            return limpio
+        raise ValueError("Debe ser un celular colombiano (ej: 3041431918)")
 
 class CotizacionOut(CotizacionCreate):
     id: int

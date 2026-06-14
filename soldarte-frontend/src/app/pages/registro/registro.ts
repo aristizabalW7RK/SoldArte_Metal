@@ -3,8 +3,14 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 
-const COL_TEL_RE = /^(\+57)?3\d{9}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function formatearTelefono(digitos: string): string {
+  const d = digitos.replace(/\D/g, '').slice(0, 10);
+  if (d.length <= 3) return d;
+  if (d.length <= 6) return `${d.slice(0, 3)} ${d.slice(3)}`;
+  return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`;
+}
 
 @Component({
   selector: 'app-registro',
@@ -18,7 +24,9 @@ export class Registro {
 
   nombre = signal('');
   email = signal('');
-  telefono = signal('');
+  telefonoDigitos = signal('');
+  telefonoFormateado = computed(() => formatearTelefono(this.telefonoDigitos()));
+  telefonoCompleto = computed(() => this.telefonoDigitos().length === 10 && this.telefonoDigitos().startsWith('3'));
   fechaNacimiento = signal('');
   password = signal('');
   error = signal('');
@@ -31,15 +39,21 @@ export class Registro {
   pwNumero = computed(() => /\d/.test(this.password()));
   pwSimbolo = computed(() => /[!@#$%^&*()_\-+=\[\]{}|;:'",.<>?/\\~`]/.test(this.password()));
 
-  telefonoValido = computed(() => !this.telefono() || COL_TEL_RE.test(this.telefono()));
   emailValido = computed(() => !this.email() || EMAIL_RE.test(this.email()));
+
+  onTelefonoInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const soloDigitos = input.value.replace(/\D/g, '').slice(0, 10);
+    this.telefonoDigitos.set(soloDigitos);
+    input.value = formatearTelefono(soloDigitos);
+  }
 
   private erroresValidacion(): string[] {
     const errores: string[] = [];
     if (!this.nombre()) errores.push('El nombre es obligatorio');
     if (!this.email()) errores.push('El correo electrónico es obligatorio');
     else if (!this.emailValido()) errores.push('El correo electrónico no es válido');
-    if (this.telefono() && !this.telefonoValido()) errores.push('El teléfono debe ser un celular colombiano válido (ej: 3001234567)');
+    if (this.telefonoDigitos() && !this.telefonoCompleto()) errores.push('El teléfono debe ser un celular colombiano de 10 dígitos (ej: 304 143 1918)');
     if (!this.password()) errores.push('La contraseña es obligatoria');
     else {
       if (!this.pwLargo()) errores.push('Mínimo 8 caracteres');
@@ -63,7 +77,7 @@ export class Registro {
       nombre: this.nombre(),
       email: this.email(),
       password: this.password(),
-      telefono: this.telefono() || undefined,
+      telefono: this.telefonoDigitos() || undefined,
       fecha_nacimiento: this.fechaNacimiento() || undefined,
     };
     this.authService.registro(datos).subscribe({

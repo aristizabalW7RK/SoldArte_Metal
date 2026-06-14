@@ -22,7 +22,7 @@ class TestUsuarioCreate:
             telefono="3001234567",
         )
         assert data.nombre == "Juan Pérez"
-        assert data.telefono == "3001234567"
+        assert data.telefono == "+573001234567"
 
     def test_missing_email(self):
         with pytest.raises(ValidationError):

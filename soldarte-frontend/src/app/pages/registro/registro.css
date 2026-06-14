@@ -172,6 +172,48 @@ form {
   cursor: not-allowed;
 }
 
+.input-phone {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-primary);
+  transition: border-color 0.3s ease;
+}
+
+.input-phone:focus-within {
+  border-color: #e63946;
+}
+
+.phone-prefix {
+  padding: 0.9rem 0 0.9rem 1rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  border-right: 1px solid var(--border-color);
+  user-select: none;
+}
+
+.input-phone input {
+  flex: 1;
+  border: none !important;
+  outline: none;
+  background: transparent;
+  padding: 0.9rem 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  min-width: 0;
+}
+
+.phone-status {
+  padding: 0.9rem 1rem 0.9rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.phone-status.valido { color: #2ecc71; }
+.phone-status.invalido { color: #e63946; }
+
 .pw-requisitos {
   list-style: none;
   padding: 0;

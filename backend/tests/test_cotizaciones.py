@@ -36,14 +36,14 @@ class TestCotizaciones:
     def test_listar_cotizaciones(self, client, auth_headers):
         client.post("/api/cotizaciones", json={
             "nombre_cliente": "A",
-            "telefono": "1",
+            "telefono": "3001111111",
             "email": "a@a.com",
             "tipo_trabajo": "Reja",
             "descripcion": "Reja ventana",
         })
         client.post("/api/cotizaciones", json={
             "nombre_cliente": "B",
-            "telefono": "2",
+            "telefono": "3002222222",
             "email": "b@b.com",
             "tipo_trabajo": "Puerta",
             "descripcion": "Puerta entrada",
@@ -55,14 +55,14 @@ class TestCotizaciones:
     def test_filtrar_cotizaciones_por_estado(self, client, auth_headers):
         client.post("/api/cotizaciones", json={
             "nombre_cliente": "A",
-            "telefono": "1",
+            "telefono": "3001111111",
             "email": "a@a.com",
             "tipo_trabajo": "Reja",
             "descripcion": "Reja ventana",
         })
         client.post("/api/cotizaciones", json={
             "nombre_cliente": "B",
-            "telefono": "2",
+            "telefono": "3002222222",
             "email": "b@b.com",
             "tipo_trabajo": "Puerta",
             "descripcion": "Puerta entrada",
@@ -73,7 +73,7 @@ class TestCotizaciones:
     def test_cambiar_estado_cotizacion(self, client, auth_headers):
         cot = client.post("/api/cotizaciones", json={
             "nombre_cliente": "Test",
-            "telefono": "123",
+            "telefono": "3003333333",
             "email": "test@test.com",
             "tipo_trabajo": "Ventana",
             "descripcion": "Ventana hierro",
@@ -85,7 +85,7 @@ class TestCotizaciones:
     def test_cambiar_estado_invalido(self, client, auth_headers):
         cot = client.post("/api/cotizaciones", json={
             "nombre_cliente": "Test",
-            "telefono": "123",
+            "telefono": "3004444444",
             "email": "test@test.com",
             "tipo_trabajo": "Ventana",
             "descripcion": "Ventana hierro",

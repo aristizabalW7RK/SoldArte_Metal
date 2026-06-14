@@ -18,7 +18,15 @@
       </div>
       <div class="form-group">
         <label>Teléfono</label>
-        <input type="tel" placeholder="+57 300 000 0000" [(ngModel)]="telefono" name="telefono" required>
+        <div class="input-phone">
+          <span class="phone-prefix">+57</span>
+          <input type="tel" [value]="telefonoFormateado()" (input)="onTelefonoInput($event)" placeholder="304 143 1918" name="telefono" maxlength="12" required>
+          @if (telefonoDigitos()) {
+            <span class="phone-status" [class.valido]="telefonoCompleto()" [class.invalido]="!telefonoCompleto()">
+              {{ telefonoCompleto() ? '✓' : '✗' }}
+            </span>
+          }
+        </div>
       </div>
       <div class="form-group">
         <label>Correo electrónico</label>
