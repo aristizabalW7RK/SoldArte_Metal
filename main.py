@@ -8,8 +8,9 @@ import os
 
 Base.metadata.create_all(bind=engine)
 
-from backend.services.seed import seed_if_empty
+from backend.services.seed import seed_if_empty, ensure_admin
 seed_if_empty()
+ensure_admin()
 
 app = FastAPI(
     title="Soldarte Metal API",

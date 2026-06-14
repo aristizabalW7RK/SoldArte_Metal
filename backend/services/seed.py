@@ -96,6 +96,39 @@ def seed_if_empty():
         db.close()
 
 
+def ensure_admin():
+    """Sincroniza el admin en cada startup: crea si no existe, o actualiza email/password si cambiaron."""
+    db = SessionLocal()
+    try:
+        admin = db.query(Usuario).filter(Usuario.es_admin == True).first()
+        pw_hash = hash_password(settings.ADMIN_PASSWORD)
+        if not admin:
+            db.add(Usuario(
+                nombre="Administrador",
+                email=settings.ADMIN_EMAIL,
+                password_hash=pw_hash,
+                es_admin=True,
+            ))
+            db.commit()
+            print(f"  ✓ Admin creado: {settings.ADMIN_EMAIL}")
+        else:
+            cambios = False
+            if admin.email != settings.ADMIN_EMAIL:
+                admin.email = settings.ADMIN_EMAIL
+                cambios = True
+            if not verify_password(settings.ADMIN_PASSWORD, admin.password_hash):
+                admin.password_hash = pw_hash
+                admin.email = settings.ADMIN_EMAIL
+                cambios = True
+            if cambios:
+                db.commit()
+                print(f"  ✓ Admin sincronizado: {settings.ADMIN_EMAIL}")
+    except Exception as e:
+        print(f"  ! Error al sincronizar admin: {e}")
+    finally:
+        db.close()
+
+
 if __name__ == "__main__":
     print("Ejecutando seed...")
     run_all()
