@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from backend.core.database import engine, Base
 from backend.core.config import settings
 from backend.api.routes import auth, portafolio, productos, cotizaciones
-from backend.services.seed import seed_if_empty, ensure_admin
+from backend.services.seed import seed_if_empty, ensure_admin, _reparar_secuencias
 import os
 
 Base.metadata.create_all(bind=engine)
@@ -12,6 +12,7 @@ Base.metadata.create_all(bind=engine)
 try:
     seed_if_empty()
     ensure_admin()
+    _reparar_secuencias()
 except Exception:
     pass
 

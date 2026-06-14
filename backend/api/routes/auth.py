@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 from backend.core.database import get_db
@@ -6,6 +8,8 @@ from backend.core.security import hash_password, verify_password, create_access_
 from backend.core.config import settings
 from backend.models.models import Usuario
 from backend.schemas.schemas import UsuarioCreate, UsuarioOut, LoginSchema
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/auth", tags=["Autenticación"])
 
@@ -42,8 +46,13 @@ def registrar_usuario(datos: UsuarioCreate, db: Session = Depends(get_db)):
 @router.post("/login", response_model=UsuarioOut)
 def login(datos: LoginSchema, response: Response, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == datos.email).first()
-    if not usuario or not verify_password(datos.password, usuario.password_hash):
+    if not usuario:
+        logger.warning(f"Login fallido: email no registrado — {datos.email}")
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
+    if not verify_password(datos.password, usuario.password_hash):
+        logger.warning(f"Login fallido: contraseña incorrecta — {datos.email}")
+        raise HTTPException(status_code=401, detail="Credenciales inválidas")
+    logger.info(f"Login exitoso: {datos.email}")
     token = create_access_token({
         "sub": str(usuario.id),
         "nombre": usuario.nombre,
