@@ -96,4 +96,12 @@ export class AdminProductos {
       error: err => this.error.set(err.error?.detail || 'Error al subir imagen'),
     });
   }
+
+  eliminarProducto(id: number) {
+    if (!confirm('¿Eliminar este producto?')) return;
+    this.productoService.eliminarProducto(id).subscribe({
+      next: () => this.cargarProductos(),
+      error: err => this.error.set(err.error?.detail || 'Error al eliminar producto'),
+    });
+  }
 }

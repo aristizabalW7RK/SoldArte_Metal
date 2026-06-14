@@ -27,4 +27,8 @@ export class ProductoService {
       }))),
     );
   }
+
+  eliminarProducto(id: number) {
+    return this.api.delete(`/api/productos/${id}`);
+  }
 }

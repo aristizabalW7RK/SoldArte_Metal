@@ -208,3 +208,20 @@
 .producto-info .stock.agotado {
   color: #e63946;
 }
+
+.btn-eliminar {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.btn-eliminar:hover {
+  color: #e63946;
+  border-color: #e63946;
+}

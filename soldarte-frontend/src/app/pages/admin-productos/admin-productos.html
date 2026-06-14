@@ -73,7 +73,9 @@
               <span class="ref">{{ p.referencia }}</span>
               <span class="precio">${{ p.precio }}</span>
               <span class="stock" [class.agotado]="p.stock === 0">Stock: {{ p.stock }}</span>
+              <span class="stock" [class.agotado]="p.stock === 0">Stock: {{ p.stock }}</span>
             </div>
+            <button class="btn-eliminar" (click)="eliminarProducto(p.id)" title="Eliminar producto">✕</button>
           </div>
         }
       </div>
