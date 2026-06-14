@@ -85,6 +85,17 @@ def run_all():
     seed_portafolio()
 
 
+def seed_if_empty():
+    db = SessionLocal()
+    try:
+        if db.query(Obra).first() is not None:
+            return
+        print("DB vacía — ejecutando seed...")
+        run_all()
+    finally:
+        db.close()
+
+
 if __name__ == "__main__":
     print("Ejecutando seed...")
     run_all()

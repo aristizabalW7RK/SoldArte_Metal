@@ -35,14 +35,28 @@ export class AuthService {
     es_admin: boolean;
   } | null>(null);
 
+  /** Resuelve cuando la verificación inicial de /me termina */
+  autenticacionLista: Promise<void>;
+
+  private autenticacionResolve!: () => void;
+
   constructor() {
+    this.autenticacionLista = new Promise(resolve => {
+      this.autenticacionResolve = resolve;
+    });
     this.cargarUsuario();
   }
 
   private cargarUsuario() {
     this.api.get<UsuarioResponse>('/api/auth/me').subscribe({
-      next: res => this.usuario.set(res),
-      error: () => this.usuario.set(null),
+      next: res => {
+        this.usuario.set(res);
+        this.autenticacionResolve();
+      },
+      error: () => {
+        this.usuario.set(null);
+        this.autenticacionResolve();
+      },
     });
   }
 

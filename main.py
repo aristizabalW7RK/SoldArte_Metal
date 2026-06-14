@@ -8,6 +8,9 @@ import os
 
 Base.metadata.create_all(bind=engine)
 
+from backend.services.seed import seed_if_empty
+seed_if_empty()
+
 app = FastAPI(
     title="Soldarte Metal API",
     description="Backend para la plataforma web de Soldarte Metal — herrería de obra y artística",
