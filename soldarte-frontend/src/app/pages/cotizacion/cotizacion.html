@@ -20,7 +20,7 @@
         <label>Teléfono</label>
         <div class="input-phone">
           <span class="phone-prefix">+57</span>
-          <input type="tel" [value]="telefonoFormateado()" (input)="onTelefonoInput($event)" placeholder="304 143 1918" name="telefono" maxlength="12" required>
+          <input type="tel" [value]="telefonoFormateado()" (input)="onTelefonoInput($event)" placeholder="300 111 1111" name="telefono" maxlength="12" required>
           @if (telefonoDigitos()) {
             <span class="phone-status" [class.valido]="telefonoCompleto()" [class.invalido]="!telefonoCompleto()">
               {{ telefonoCompleto() ? '✓' : '✗' }}

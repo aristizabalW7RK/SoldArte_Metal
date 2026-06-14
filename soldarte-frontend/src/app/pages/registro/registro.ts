@@ -53,7 +53,7 @@ export class Registro {
     if (!this.nombre()) errores.push('El nombre es obligatorio');
     if (!this.email()) errores.push('El correo electrónico es obligatorio');
     else if (!this.emailValido()) errores.push('El correo electrónico no es válido');
-    if (this.telefonoDigitos() && !this.telefonoCompleto()) errores.push('El teléfono debe ser un celular colombiano de 10 dígitos (ej: 304 143 1918)');
+    if (this.telefonoDigitos() && !this.telefonoCompleto()) errores.push('El teléfono debe ser un celular colombiano de 10 dígitos (ej: 300 111 1111)');
     if (!this.password()) errores.push('La contraseña es obligatoria');
     else {
       if (!this.pwLargo()) errores.push('Mínimo 8 caracteres');

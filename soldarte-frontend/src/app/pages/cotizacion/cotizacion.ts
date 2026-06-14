@@ -46,7 +46,7 @@ export class Cotizacion {
 
   enviarCotizacion() {
     if (!this.nombreCliente()) { this.error.set('El nombre es obligatorio'); return; }
-    if (!this.telefonoCompleto()) { this.error.set('El teléfono debe ser un celular colombiano de 10 dígitos (ej: 304 143 1918)'); return; }
+    if (!this.telefonoCompleto()) { this.error.set('El teléfono debe ser un celular colombiano de 10 dígitos (ej: 300 111 1111)'); return; }
     if (!this.email() || !this.emailValido()) { this.error.set('El correo electrónico no es válido'); return; }
     if (!this.tipoTrabajo()) { this.error.set('Selecciona un tipo de trabajo'); return; }
     if (!this.descripcion()) { this.error.set('La descripción es obligatoria'); return; }

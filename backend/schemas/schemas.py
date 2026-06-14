@@ -37,7 +37,7 @@ class UsuarioCreate(BaseModel):
             return f"+57{limpio}"
         if re.match(r"^\+57\d{10}$", limpio):
             return limpio
-        raise ValueError("Debe ser un celular colombiano (ej: 3041431918)")
+        raise ValueError("Debe ser un celular colombiano (ej: 3001111111)")
 
 class UsuarioOut(BaseModel):
     id: int
@@ -122,7 +122,7 @@ class CotizacionCreate(BaseModel):
             return f"+57{limpio}"
         if re.match(r"^\+57\d{10}$", limpio):
             return limpio
-        raise ValueError("Debe ser un celular colombiano (ej: 3041431918)")
+        raise ValueError("Debe ser un celular colombiano (ej: 3001111111)")
 
 class CotizacionOut(CotizacionCreate):
     id: int
