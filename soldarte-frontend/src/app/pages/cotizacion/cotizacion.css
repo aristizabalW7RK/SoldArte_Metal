@@ -192,7 +192,7 @@ form {
 }
 
 .phone-prefix {
-  padding: 0.9rem 0 0.9rem 1rem;
+  padding: 0.9rem 6px 0.9rem 0.5rem;
   font-size: 0.95rem;
   color: var(--text-secondary);
   font-weight: 600;

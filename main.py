@@ -4,13 +4,16 @@ from fastapi.staticfiles import StaticFiles
 from backend.core.database import engine, Base
 from backend.core.config import settings
 from backend.api.routes import auth, portafolio, productos, cotizaciones
+from backend.services.seed import seed_if_empty, ensure_admin
 import os
 
 Base.metadata.create_all(bind=engine)
 
-from backend.services.seed import seed_if_empty, ensure_admin
-seed_if_empty()
-ensure_admin()
+try:
+    seed_if_empty()
+    ensure_admin()
+except Exception:
+    pass
 
 app = FastAPI(
     title="Soldarte Metal API",

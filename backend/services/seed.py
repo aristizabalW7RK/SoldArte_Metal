@@ -2,6 +2,7 @@ from backend.core.config import settings
 from backend.core.database import SessionLocal
 from backend.core.security import hash_password, verify_password
 from backend.models.models import Usuario, Categoria, Obra, ImagenObra
+from sqlalchemy import text
 import os, shutil
 
 
@@ -79,10 +80,34 @@ def seed_portafolio():
         db.close()
 
 
+def _reparar_secuencias():
+    db = SessionLocal()
+    try:
+        if db.bind.dialect.name != "postgresql":
+            return
+        secuencias = [
+            ("categoria_id_seq", "categoria"),
+            ("obra_id_seq", "obra"),
+            ("imagen_obra_id_seq", "imagen_obra"),
+            ("producto_id_seq", "producto"),
+            ("usuario_id_seq", "usuario"),
+            ("cotizacion_id_seq", "cotizacion"),
+        ]
+        for seq, tabla in secuencias:
+            db.execute(text(f"SELECT setval('{seq}', (SELECT COALESCE(MAX(id), 1) FROM {tabla}))"))
+        db.commit()
+        print("  ✓ Secuencias reparadas")
+    except Exception as e:
+        print(f"  ! Error reparando secuencias: {e}")
+    finally:
+        db.close()
+
+
 def run_all():
     copiar_imagenes_seed()
     seed_admin()
     seed_portafolio()
+    _reparar_secuencias()
 
 
 def seed_if_empty():
