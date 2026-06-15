@@ -371,3 +371,14 @@
 }
 
 .lightbox-cerrar:hover { opacity: 1; }
+
+@media (max-width: 480px) {
+  .lightbox-overlay {
+    padding: 1rem;
+  }
+
+  .lightbox-cerrar {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}

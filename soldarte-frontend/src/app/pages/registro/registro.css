@@ -266,3 +266,22 @@ form {
     font-size: 2.5rem;
   }
 }
+
+@media (max-width: 480px) {
+  .registro-titulo {
+    font-size: 1.8rem;
+  }
+
+  .registro-derecha h2 {
+    font-size: 1.5rem;
+  }
+
+  .registro-derecha {
+    padding: 1.5rem 1rem;
+  }
+
+  .form-group input {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+}

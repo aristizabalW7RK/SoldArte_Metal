@@ -202,6 +202,24 @@
     font-size: 0.75rem;
     padding: 0.5rem 1rem;
   }
+
+  .lightbox-overlay {
+    padding: 1rem;
+  }
+
+  .lightbox-cerrar {
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 2rem;
+  }
+
+  .lightbox-prev {
+    left: 0.5rem;
+  }
+
+  .lightbox-next {
+    right: 0.5rem;
+  }
 }
 
 .obra-sin-imagen {

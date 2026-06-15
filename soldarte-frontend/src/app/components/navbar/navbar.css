@@ -21,6 +21,22 @@
   width: auto;
 }
 
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .navbar-brand img {
+    height: 70px;
+    top: -8px;
+  }
+
+  .navbar-left {
+    gap: 0.3rem;
+    padding-right: 0.3rem;
+  }
+}
+
 .hamburger {
   display: flex;
   flex-direction: column;
@@ -51,6 +67,13 @@
   z-index: 1001;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .nav-menu {
+    width: min(400px, 85vw);
+    left: -85vw;
+  }
 }
 
 .nav-menu img {
@@ -124,6 +147,12 @@
   display: flex;
   gap: 1.5rem;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
 }
 
 .navbar-links a {

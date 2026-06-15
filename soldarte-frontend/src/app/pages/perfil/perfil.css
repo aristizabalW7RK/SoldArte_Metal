@@ -64,3 +64,13 @@
 .btn-volver:hover {
   border-color: #e63946;
 }
+
+@media (max-width: 480px) {
+  .perfil-card {
+    padding: 1.5rem;
+  }
+
+  .perfil-card h1 {
+    font-size: 1.4rem;
+  }
+}

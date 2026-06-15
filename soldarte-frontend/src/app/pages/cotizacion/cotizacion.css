@@ -243,3 +243,24 @@ form {
     padding: 0;
   }
 }
+
+@media (max-width: 480px) {
+  .cotizacion-titulo {
+    font-size: 1.8rem;
+  }
+
+  .cotizacion-texto-der h2 {
+    font-size: 2rem;
+  }
+
+  .cotizacion-formulario {
+    padding: 1.5rem 1rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+}
