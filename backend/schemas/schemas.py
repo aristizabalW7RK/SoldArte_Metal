@@ -89,6 +89,14 @@ class ObraOut(ObraCreate):
     categoria: CategoriaOut
     model_config = ConfigDict(from_attributes=True)
 
+# --- Imagen Producto ---
+class ImagenProductoOut(BaseModel):
+    id: int
+    url: str
+    es_portada: bool
+    orden: int
+    model_config = ConfigDict(from_attributes=True)
+
 # --- Producto ---
 class ProductoCreate(BaseModel):
     nombre: str
@@ -101,6 +109,7 @@ class ProductoCreate(BaseModel):
 class ProductoOut(ProductoCreate):
     id: int
     imagen_url: Optional[str]
+    imagenes: list[ImagenProductoOut] = []
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)
 

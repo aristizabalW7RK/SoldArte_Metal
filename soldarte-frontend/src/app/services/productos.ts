@@ -2,6 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { ApiService } from './api';
 
+export interface ImagenProducto {
+  id: number;
+  url: string;
+  es_portada: boolean;
+  orden: number;
+}
+
 export interface Producto {
   id: number;
   nombre: string;
@@ -11,6 +18,7 @@ export interface Producto {
   stock: number;
   disponible: boolean;
   imagen_url: string | null;
+  imagenes: ImagenProducto[];
   created_at: string;
 }
 
@@ -18,13 +26,21 @@ export interface Producto {
 export class ProductoService {
   private api = inject(ApiService);
 
+  private mapearUrl(base: string) {
+    return (p: Producto): Producto => ({
+      ...p,
+      imagen_url: p.imagen_url ? `${base}${p.imagen_url}` : null,
+      imagenes: p.imagenes.map(img => ({
+        ...img,
+        url: `${base}${img.url}`,
+      })),
+    });
+  }
+
   obtenerProductos(soloDisponibles = true) {
     const params = { solo_disponibles: String(soloDisponibles) };
     return this.api.get<Producto[]>('/api/productos', params).pipe(
-      map(productos => productos.map(p => ({
-        ...p,
-        imagen_url: p.imagen_url ? `${this.api.baseUrl}${p.imagen_url}` : null,
-      }))),
+      map(productos => productos.map(this.mapearUrl(this.api.baseUrl))),
     );
   }
 

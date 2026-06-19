@@ -256,6 +256,17 @@
 }
 .obra-card h4 { margin: 0; font-size: 1rem; }
 
+.obra-thumbs {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.obra-thumb-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 .obra-thumb {
   width: 60px;
   height: 60px;
@@ -266,6 +277,26 @@
 }
 
 .obra-thumb:hover { opacity: 0.8; }
+
+.obra-thumb-wrapper .btn-img-eliminar {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  background: #e63946;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
 
 .obra-card-info {
   display: flex;

@@ -64,12 +64,17 @@
         }
       </form>
 
-      @if (productoIdImagen && !productoEditando()) {
+      @if (productoIdImagen()) {
         <div class="imagen-upload">
-          <h3>¿Agregar imagen?</h3>
+          <h3>Imágenes del producto</h3>
+          @if (imagenError()) {
+            <div class="error-mensaje">{{ imagenError() }}</div>
+          }
           <input type="file" accept="image/*" (change)="onImagenSeleccionada($event)">
           @if (imagenFile) {
-            <button class="btn-subir" (click)="subirImagen(productoIdImagen!)">Subir Imagen</button>
+            <button class="btn-subir" (click)="subirImagen(productoIdImagen()!)">
+              Subir Imagen
+            </button>
           }
         </div>
       }
@@ -86,9 +91,16 @@
         <div class="productos-lista">
           @for (p of productos(); track p.id) {
           <div class="producto-item" [class.editando]="productoEditando()?.id === p.id">
-            @if (p.imagen_url) {
-              <img [src]="p.imagen_url" [alt]="p.nombre" class="producto-thumb">
-            }
+            <div class="producto-imagenes">
+              @if (p.imagenes.length > 0) {
+                @for (img of p.imagenes; track img.id) {
+                  <div class="producto-thumb-wrapper">
+                    <img [src]="img.url" [alt]="p.nombre" class="producto-thumb">
+                    <button class="btn-img-eliminar" (click)="eliminarImagen(p.id, img.id)" title="Eliminar imagen">✕</button>
+                  </div>
+                }
+              }
+            </div>
             <div class="producto-info">
               <strong>{{ p.nombre }}</strong>
               <span class="ref">{{ p.referencia }}</span>
@@ -96,7 +108,7 @@
               <span class="stock" [class.agotado]="p.stock === 0">Stock: {{ p.stock }}</span>
             </div>
             <div class="producto-item-acciones">
-              <button class="btn-editar" (click)="editarProducto(p)" title="Editar producto">✎</button>
+              <button class="btn-editar" (click)="editarProducto(p); $event.stopPropagation()" title="Editar producto">✎</button>
               <button class="btn-eliminar" (click)="eliminarProducto(p.id)" title="Eliminar producto">✕</button>
             </div>
           </div>

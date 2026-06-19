@@ -61,66 +61,42 @@ def _get_token(resp):
 
 _TEST_PASSWORD = "TestPass1!"
 
-@pytest.fixture
-def auth_headers(client):
+
+def _crear_sesion(client, nombre, email, es_admin=False):
     user_resp = client.post("/api/auth/registro", json={
-        "nombre": "Admin",
-        "email": "admin@test.com",
+        "nombre": nombre,
+        "email": email,
         "password": _TEST_PASSWORD,
     }).json()
-    db = TestSessionLocal()
-    from backend.models.models import Usuario as UsuarioModel
-    usuario = db.query(UsuarioModel).filter(UsuarioModel.id == user_resp["id"]).first()
-    usuario.es_admin = True
-    db.commit()
-    db.close()
-
+    if es_admin:
+        db = TestSessionLocal()
+        from backend.models.models import Usuario as UsuarioModel
+        usuario = db.query(UsuarioModel).filter(UsuarioModel.id == user_resp["id"]).first()
+        usuario.es_admin = True
+        db.commit()
+        db.close()
     resp = client.post("/api/auth/login", json={
-        "email": "admin@test.com",
+        "email": email,
         "password": _TEST_PASSWORD,
     })
     token = _get_token(resp)
-    return {"Authorization": f"Bearer {token}"}
+    return {
+        "headers": {"Authorization": f"Bearer {token}"},
+        "user_id": user_resp["id"],
+    }
+
+
+@pytest.fixture
+def auth_headers(client):
+    result = _crear_sesion(client, "Admin", "admin@test.com", es_admin=True)
+    return result["headers"]
 
 
 @pytest.fixture
 def auth_data(client):
-    user_resp = client.post("/api/auth/registro", json={
-        "nombre": "Normal User",
-        "email": "normal@test.com",
-        "password": _TEST_PASSWORD,
-    }).json()
-    resp = client.post("/api/auth/login", json={
-        "email": "normal@test.com",
-        "password": _TEST_PASSWORD,
-    })
-    token = _get_token(resp)
-    return {
-        "headers": {"Authorization": f"Bearer {token}"},
-        "user_id": user_resp["id"],
-    }
+    return _crear_sesion(client, "Normal User", "normal@test.com")
 
 
 @pytest.fixture
 def admin_data(client):
-    user_resp = client.post("/api/auth/registro", json={
-        "nombre": "Admin",
-        "email": "admin@test.com",
-        "password": _TEST_PASSWORD,
-    }).json()
-    db = TestSessionLocal()
-    from backend.models.models import Usuario as UsuarioModel
-    usuario = db.query(UsuarioModel).filter(UsuarioModel.id == user_resp["id"]).first()
-    usuario.es_admin = True
-    db.commit()
-    db.close()
-
-    resp = client.post("/api/auth/login", json={
-        "email": "admin@test.com",
-        "password": _TEST_PASSWORD,
-    })
-    token = _get_token(resp)
-    return {
-        "headers": {"Authorization": f"Bearer {token}"},
-        "user_id": user_resp["id"],
-    }
+    return _crear_sesion(client, "Admin", "admin@test.com", es_admin=True)

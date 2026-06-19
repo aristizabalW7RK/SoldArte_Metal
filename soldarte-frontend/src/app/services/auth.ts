@@ -93,6 +93,8 @@ export class AuthService {
   logout() {
     this.api.post('/api/auth/logout', {}).pipe(
       finalize(() => this.usuario.set(null)),
-    ).subscribe();
+    ).subscribe({
+      error: () => console.error('Error al cerrar sesión'),
+    });
   }
 }

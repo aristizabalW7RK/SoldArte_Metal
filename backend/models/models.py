@@ -66,6 +66,18 @@ class Producto(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     favoritos = relationship("Favorito", back_populates="producto")
+    imagenes = relationship("ImagenProducto", back_populates="producto", cascade="all, delete-orphan")
+
+
+class ImagenProducto(Base):
+    __tablename__ = "imagen_producto"
+    id = Column(Integer, primary_key=True, index=True)
+    producto_id = Column(Integer, ForeignKey("producto.id"), nullable=False)
+    url = Column(String(500), nullable=False)
+    es_portada = Column(Boolean, default=False)
+    orden = Column(Integer, default=0)
+
+    producto = relationship("Producto", back_populates="imagenes")
 
 
 class Cotizacion(Base):

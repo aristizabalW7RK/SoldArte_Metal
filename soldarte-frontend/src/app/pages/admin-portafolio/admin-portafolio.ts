@@ -213,6 +213,7 @@ export class AdminPortafolio {
     this.obrDestacado.set(obra.destacado);
     this.obrError.set('');
     this.obrExitoso.set('');
+    this.obraIdImagen.set(obra.id);
   }
 
   cancelarEdicionObra() {
@@ -223,6 +224,7 @@ export class AdminPortafolio {
     this.obrUbicacion.set('');
     this.obrFecha.set('');
     this.obrDestacado.set(false);
+    this.obraIdImagen.set(null);
   }
 
   onImagenSeleccionada(event: Event) {
@@ -251,7 +253,6 @@ export class AdminPortafolio {
       next: () => {
         this.imagenFile = null;
         this.imagenPortada.set(false);
-        this.obraIdImagen.set(null);
         this.imagenCargando.set(false);
         this.cargarDatos();
       },
@@ -259,6 +260,14 @@ export class AdminPortafolio {
         this.imagenError.set(err.error?.detail || 'Error al subir imagen');
         this.imagenCargando.set(false);
       },
+    });
+  }
+
+  eliminarImagen(obraId: number, imagenId: number) {
+    if (!confirm('¿Eliminar esta imagen?')) return;
+    this.api.delete(`/api/portafolio/obras/${obraId}/imagenes/${imagenId}`).subscribe({
+      next: () => this.cargarDatos(),
+      error: err => this.obrError.set(err.error?.detail || 'Error al eliminar imagen'),
     });
   }
 }

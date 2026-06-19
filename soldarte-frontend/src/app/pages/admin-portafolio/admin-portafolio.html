@@ -96,9 +96,9 @@
     </section>
   </div>
 
-  @if (obraIdImagen() && obrExitoso() === 'Obra creada') {
+  @if (obraIdImagen()) {
     <section class="imagen-upload">
-      <h3>Agregar imagen a la obra</h3>
+      <h3>Imágenes de la obra</h3>
       @if (imagenError()) {
         <div class="error-mensaje">{{ imagenError() }}</div>
       }
@@ -149,8 +149,15 @@
         @for (o of obras(); track o.id) {
         <div class="obra-card" [class.editando]="obraEditando()?.id === o.id">
           @if (o.imagenes.length > 0) {
-            <img [src]="o.imagenes[0].url" [alt]="o.titulo" class="obra-thumb"
-              (click)="imagenSeleccionada.set(o.imagenes[0].url)">
+            <div class="obra-thumbs">
+              @for (img of o.imagenes; track img.id) {
+                <div class="obra-thumb-wrapper">
+                  <img [src]="img.url" [alt]="o.titulo" class="obra-thumb"
+                    (click)="imagenSeleccionada.set(img.url)">
+                  <button class="btn-img-eliminar" (click)="eliminarImagen(o.id, img.id); $event.stopPropagation()" title="Eliminar imagen">✕</button>
+                </div>
+              }
+            </div>
           }
           <div class="obra-card-info">
             <h4>{{ o.titulo }}</h4>

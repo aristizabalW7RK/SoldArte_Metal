@@ -1,3 +1,7 @@
+import logging
+import os
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -5,21 +9,28 @@ from backend.core.database import engine, Base
 from backend.core.config import settings
 from backend.api.routes import auth, portafolio, productos, cotizaciones
 from backend.services.seed import seed_if_empty, ensure_admin, _reparar_secuencias
-import os
 
-Base.metadata.create_all(bind=engine)
+logger = logging.getLogger(__name__)
 
-try:
-    seed_if_empty()
-    ensure_admin()
-    _reparar_secuencias()
-except Exception:
-    pass
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if "sqlite" not in str(engine.url):
+        Base.metadata.create_all(bind=engine)
+        try:
+            seed_if_empty()
+            ensure_admin()
+            _reparar_secuencias()
+        except Exception as e:
+            logger.warning("Error durante el seed inicial: %s", e)
+    yield
+
 
 app = FastAPI(
     title="Soldarte Metal API",
     description="Backend para la plataforma web de Soldarte Metal — herrería de obra y artística",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(

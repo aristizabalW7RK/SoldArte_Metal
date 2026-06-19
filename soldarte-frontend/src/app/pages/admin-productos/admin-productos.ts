@@ -30,7 +30,8 @@ export class AdminProductos {
   productoEditando = signal<Producto | null>(null);
 
   imagenFile: File | null = null;
-  productoIdImagen: number | null = null;
+  productoIdImagen = signal<number | null>(null);
+  imagenError = signal('');
 
   constructor() {
     this.cargarProductos();
@@ -98,7 +99,7 @@ export class AdminProductos {
           this.precio.set(null);
           this.stock.set(0);
           this.disponible.set(true);
-          this.productoIdImagen = prod.id;
+          this.productoIdImagen.set(prod.id);
           this.cargarProductos();
         },
         error: err => {
@@ -119,6 +120,7 @@ export class AdminProductos {
     this.disponible.set(producto.disponible);
     this.error.set('');
     this.exitoso.set('');
+    this.productoIdImagen.set(producto.id);
   }
 
   cancelarEdicionProducto() {
@@ -129,6 +131,7 @@ export class AdminProductos {
     this.precio.set(null);
     this.stock.set(0);
     this.disponible.set(true);
+    this.productoIdImagen.set(null);
   }
 
   onImagenSeleccionada(event: Event) {
@@ -140,15 +143,24 @@ export class AdminProductos {
 
   subirImagen(productoId: number) {
     if (!this.imagenFile) return;
+    this.imagenError.set('');
     const formData = new FormData();
     formData.append('file', this.imagenFile);
-    this.api.post<Producto>(`/api/productos/${productoId}/imagen`, formData).subscribe({
+    this.api.post(`/api/productos/${productoId}/imagenes`, formData).subscribe({
       next: () => {
         this.imagenFile = null;
-        this.productoIdImagen = null;
+        this.productoIdImagen.set(productoId);
         this.cargarProductos();
       },
-      error: err => this.error.set(err.error?.detail || 'Error al subir imagen'),
+      error: err => this.imagenError.set(err.error?.detail || 'Error al subir imagen'),
+    });
+  }
+
+  eliminarImagen(productoId: number, imagenId: number) {
+    if (!confirm('¿Eliminar esta imagen?')) return;
+    this.api.delete(`/api/productos/${productoId}/imagenes/${imagenId}`).subscribe({
+      next: () => this.cargarProductos(),
+      error: err => this.error.set(err.error?.detail || 'Error al eliminar imagen'),
     });
   }
 

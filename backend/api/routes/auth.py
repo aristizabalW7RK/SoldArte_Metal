@@ -1,11 +1,13 @@
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from backend.core.database import get_db
 from backend.core.deps import get_current_user
 from backend.core.security import hash_password, verify_password, create_access_token
 from backend.core.config import settings
+from backend.core.rate_limiter import rate_limit_login
 from backend.models.models import Usuario
 from backend.schemas.schemas import UsuarioCreate, UsuarioOut, LoginSchema
 
@@ -28,7 +30,6 @@ def _set_token_cookie(response: Response, token: str):
 
 @router.post("/registro", response_model=UsuarioOut, status_code=201)
 def registrar_usuario(datos: UsuarioCreate, db: Session = Depends(get_db)):
-    from sqlalchemy import func
     email = datos.email.lower().strip()
     if db.query(Usuario).filter(func.lower(Usuario.email) == email).first():
         raise HTTPException(status_code=400, detail="El email ya está registrado")
@@ -46,8 +47,7 @@ def registrar_usuario(datos: UsuarioCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=UsuarioOut)
-def login(datos: LoginSchema, response: Response, db: Session = Depends(get_db)):
-    from sqlalchemy import func
+def login(datos: LoginSchema, response: Response, db: Session = Depends(get_db), _=Depends(rate_limit_login)):
     usuario = db.query(Usuario).filter(func.lower(Usuario.email) == func.lower(datos.email)).first()
     if not usuario:
         logger.warning(f"Login fallido: email no registrado — {datos.email}")

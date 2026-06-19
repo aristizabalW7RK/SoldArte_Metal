@@ -106,3 +106,21 @@ def subir_imagen_obra(
     db.commit()
     db.refresh(imagen)
     return imagen
+
+@router.delete("/obras/{obra_id}/imagenes/{imagen_id}", status_code=204)
+def eliminar_imagen_obra(
+    obra_id: int,
+    imagen_id: int,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(get_current_admin),
+):
+    obra = db.query(Obra).filter(Obra.id == obra_id).first()
+    if not obra:
+        raise HTTPException(status_code=404, detail="Obra no encontrada")
+    imagen = db.query(ImagenObra).filter(
+        ImagenObra.id == imagen_id, ImagenObra.obra_id == obra_id
+    ).first()
+    if not imagen:
+        raise HTTPException(status_code=404, detail="Imagen no encontrada")
+    db.delete(imagen)
+    db.commit()

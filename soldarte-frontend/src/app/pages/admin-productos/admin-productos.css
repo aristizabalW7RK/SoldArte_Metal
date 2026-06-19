@@ -272,3 +272,45 @@
   border-color: #457b9d;
   background: #457b9d10;
 }
+
+.producto-imagenes {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.producto-thumb-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.producto-thumb-wrapper .producto-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.btn-img-eliminar {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  background: #e63946;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.producto-thumb-wrapper:hover .btn-img-eliminar, .obra-thumb-wrapper:hover .btn-img-eliminar {
+  opacity: 1;
+}
